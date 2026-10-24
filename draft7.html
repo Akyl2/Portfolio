@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — BSIT Student & UI/UX Designer</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./draft7.css">
+</head>
+
+<body>
+
+<!-- Shared gold gradient used by the crown logo -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><linearGradient id="crown-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE08A"/><stop offset=".5" stop-color="#F5A623"/><stop offset="1" stop-color="#B8720A"/></linearGradient></defs></svg>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#home" class="nav-logo">
+    <div class="nav-logo-icon" aria-hidden="true"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 24 2.6 10.5 10.4 16.4 16 6.5 21.6 16.4 29.4 10.5 28 24Z" fill="url(#crown-gold)"/><rect x="4" y="25.6" width="24" height="3.6" rx="1.4" fill="url(#crown-gold)"/><circle cx="2.6" cy="9.4" r="1.9" fill="url(#crown-gold)"/><circle cx="16" cy="5.2" r="2.1" fill="url(#crown-gold)"/><circle cx="29.4" cy="9.4" r="1.9" fill="url(#crown-gold)"/><path d="M16 12.2 18 17.2 16 22.2 14 17.2Z" fill="#fff" opacity=".4"/></svg></div>
+    <span class="nav-logo-text">Lyka<span class="nav-logo-dot">.</span></span>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="#home" class="active">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#about">About Me</a></li>
+  </ul>
+
+  <a href="#contact" class="nav-cta">Let's Talk</a>
+
+  <input type="checkbox" id="menu-toggle" class="menu-toggle">
+  <label for="menu-toggle" class="nav-hamburger" aria-label="Open menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </label>
+
+  <div class="mobile-nav">
+    <a href="#home" class="mobile-link">Home</a>
+    <a href="#services" class="mobile-link">Services</a>
+    <a href="#projects" class="mobile-link">Projects</a>
+    <a href="#education" class="mobile-link">Education</a>
+    <a href="#about" class="mobile-link">About Me</a>
+    <a href="#contact" class="mobile-nav-cta mobile-link">Let's Talk</a>
+  </div>
+</nav>
+
+<!-- FLOATING SECTION QUICK-NAV BUTTONS -->
+<aside class="section-nav" aria-label="Section Navigation">
+  <a href="#home" class="section-nav-btn active" data-label="Home" aria-label="Go to Home"></a>
+  <a href="#services" class="section-nav-btn" data-label="Services" aria-label="Go to Services"></a>
+  <a href="#projects" class="section-nav-btn" data-label="Projects" aria-label="Go to Projects"></a>
+  <a href="#education" class="section-nav-btn" data-label="Education" aria-label="Go to Education"></a>
+  <a href="#about" class="section-nav-btn" data-label="About Me" aria-label="Go to About Me"></a>
+  <a href="#contact" class="section-nav-btn" data-label="Contact" aria-label="Go to Contact"></a>
+</aside>
+
+<!-- SECTION 1: HOME / HERO -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="hero-badge-dot"></div>
+        <span>BSIT Student & Aspiring UI/UX Designer</span>
+      </div>
+
+      <h1 class="hero-heading">
+        I'm <span class="name">LYKA ALTHEA ALINTOG</span><br>
+        BSIT Student<br>
+        based in Philippines
+      </h1>
+
+      <p class="hero-subtext">
+        Passionate Information Technology student focusing on front-end development, 
+        user interface design, and creating user-friendly digital projects.
+      </p>
+
+      <div class="hero-social">
+        <span class="hero-social-label">Follow Me On</span>
+
+        <div class="hero-social-icons">
+          <a href="#" class="social-icon" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Twitter">
+            <svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-icon" aria-label="Dribbble">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72"/><path d="M19.13 5.09c-3.72 4.35-8.94 5.66-16.88 5.85"/><path d="M21.5 12.1c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-stats">
+        <div class="hero-avatars">
+          <div class="avatar-pill ap1">A</div>
+          <div class="avatar-pill ap2">B</div>
+          <div class="avatar-pill ap3">C</div>
+          <div class="avatar-pill ap4">D</div>
+        </div>
+
+        <div class="hero-review">
+          <span class="hero-review-count">Academic & Personal Projects</span>
+          <span class="hero-review-label">Collaborative & Individual Work</span>
+        </div>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#projects" class="btn-primary">My Work <span>↗</span></a>
+        <a href="#contact" class="btn-outline">Contact Me →</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-photo-wrap">
+        <div class="hero-photo-bg">
+          <img src="./images/profile.jpg" alt="Lyka Althea Alintog" class="hero-photo">
+        </div>
+
+        <div class="hero-tag-group">
+          <span class="hero-tag">Wireframing</span>
+          <span class="hero-tag dark-tag">Figma</span>
+          <span class="hero-tag">Web Dev</span>
+          <span class="hero-tag dark-tag">UI/UX</span>
+        </div>
+
+        <div class="hero-certified">
+          BSIT<br>STUDENT<br>★★★★★
+        </div>
+
+        <div class="hero-float-card">
+          <strong>Motivated Student</strong>
+          Building Skills in Design & Code
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- GLOBAL TICKER -->
+<div class="ticker">
+  <div class="ticker-track">
+    <!-- Group 1 -->
+    <div class="ticker-item"><span>✦</span>Web Development</div>
+    <div class="ticker-item"><span>✦</span>UI/UX Design</div>
+    <div class="ticker-item"><span>✦</span>Wireframing</div>
+    <div class="ticker-item"><span>✦</span>HTML / CSS / JS</div>
+    <div class="ticker-item"><span>✦</span>Prototyping</div>
+    <div class="ticker-item"><span>✦</span>Mobile Interfaces</div>
+    <div class="ticker-item"><span>✦</span>Figma</div>
+    <!-- Group 2 (Duplicate for Infinite Loop) -->
+    <div class="ticker-item"><span>✦</span>Web Development</div>
+    <div class="ticker-item"><span>✦</span>UI/UX Design</div>
+    <div class="ticker-item"><span>✦</span>Wireframing</div>
+    <div class="ticker-item"><span>✦</span>HTML / CSS / JS</div>
+    <div class="ticker-item"><span>✦</span>Prototyping</div>
+    <div class="ticker-item"><span>✦</span>Mobile Interfaces</div>
+    <div class="ticker-item"><span>✦</span>Figma</div>
+  </div>
+</div>
+
+<!-- SECTION 2: SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+
+    <div class="services-header">
+      <div>
+        <div class="section-eyebrow">
+          <div class="eyebrow-dot"></div>
+          <span>Skills & Services</span>
+        </div>
+
+        <h2 class="section-heading">
+          What I <span class="accent">Can Do</span>
+          <span class="star">✦</span>
+        </h2>
+      </div>
+
+      <a href="#contact" class="btn-sm">Get In Touch <span>→</span></a>
+    </div>
+
+    <details class="service-item is-open" open>
+      <summary class="service-header">
+        <span class="service-num">01</span>
+        <span class="service-title">UI/UX & Wireframing</span>
+        <span class="service-toggle" aria-hidden="true">+</span>
+      </summary>
+      <div class="service-body-wrapper">
+        <div class="service-body">
+          <div class="service-tags">
+            <span>User Flows</span><span>Wireframing</span><span>Figma Prototypes</span>
+          </div>
+          <p class="service-desc">
+            Designing clean, user-centered layouts for mobile and web applications. 
+            I turn project requirements into interactive Figma prototypes and clear wireframes.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <details class="service-item">
+      <summary class="service-header">
+        <span class="service-num">02</span>
+        <span class="service-title">Front-End Web Development</span>
+        <span class="service-toggle" aria-hidden="true">+</span>
+      </summary>
+      <div class="service-body-wrapper">
+        <div class="service-body">
+          <div class="service-tags">
+            <span>HTML5 & CSS3</span><span>Basic JavaScript</span><span>Responsive Web Design</span>
+          </div>
+          <p class="service-desc">
+            Converting design mockups into functional, responsive web pages that adapt 
+            seamlessly across desktop and mobile browsers.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <details class="service-item">
+      <summary class="service-header">
+        <span class="service-num">03</span>
+        <span class="service-title">App Interface Design</span>
+        <span class="service-toggle" aria-hidden="true">+</span>
+      </summary>
+      <div class="service-body-wrapper">
+        <div class="service-body">
+          <div class="service-tags">
+            <span>Mobile UI</span><span>Usability Concepts</span><span>Prototyping</span>
+          </div>
+          <p class="service-desc">
+            Crafting intuitive interface concepts for Android and iOS mobile app 
+            projects with a focus on simplicity and ease of navigation.
+          </p>
+        </div>
+      </div>
+    </details>
+
+    <details class="service-item">
+      <summary class="service-header">
+        <span class="service-num">04</span>
+        <span class="service-title">Dashboard & Layout Design</span>
+        <span class="service-toggle" aria-hidden="true">+</span>
+      </summary>
+      <div class="service-body-wrapper">
+        <div class="service-body">
+          <div class="service-tags">
+            <span>Admin Panels</span><span>Information Systems</span><span>Data Displays</span>
+          </div>
+          <p class="service-desc">
+            Structuring information system screens and administrative dashboards 
+            to present data clearly for academic and practical applications.
+          </p>
+        </div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<!-- SECTION 3: PROJECTS -->
+<section class="projects" id="projects">
+  <div class="projects-inner">
+
+    <div class="projects-header">
+      <div>
+        <div class="section-eyebrow">
+          <div class="eyebrow-dot"></div>
+          <span>A Collection of Creations</span>
+        </div>
+
+        <h2 class="section-heading">
+          Featured <span class="accent">Projects</span>
+          <span class="star">✦</span>
+        </h2>
+      </div>
+
+      <p class="projects-intro">
+        A selection of UI/UX designs, web prototypes, and academic projects I have developed.
+      </p>
+    </div>
+
+    <!-- 3D Carousel Container -->
+    <div class="carousel-wrapper">
+      <button class="nav-btn prev-btn" id="prevBtn" aria-label="Previous Project">&#10094;</button>
+
+      <div class="carousel" id="carousel">
+        <article class="project-card" data-url="PROJECT1.html" data-title="UI/UX Redesign — Mobile App" data-category="Figma / UI/UX Design" data-desc="Redesign concept for a mobile application focusing on modern navigation and simplified checkout.">
+          <div class="project-card-image">
+            <img src="./images/project-1.jpg" alt="UI/UX Redesign" loading="lazy">
+            <span class="project-tag">Figma / UI/UX Design</span>
+          </div>
+          <div class="project-card-content">
+            <h3 class="project-card-title">UI/UX Redesign — Mobile App</h3>
+            <p class="project-card-desc">Redesign concept for a mobile application focusing on modern navigation and simplified checkout.</p>
+            <span class="project-link">View Project <span>↗</span></span>
+          </div>
+        </article>
+
+        <article class="project-card" data-url="PROJECT2.html" data-title="Student Portal Concept" data-category="Web Design / HTML & CSS" data-desc="A user-friendly dashboard layout designed for students to manage grades and schedules.">
+          <div class="project-card-image">
+            <img src="./images/project-2.png" alt="Student Portal Concept" loading="lazy">
+            <span class="project-tag">Web Design / HTML & CSS</span>
+          </div>
+          <div class="project-card-content">
+            <h3 class="project-card-title">Student Portal Concept</h3>
+            <p class="project-card-desc">A user-friendly dashboard layout designed for students to manage grades and schedules.</p>
+            <span class="project-link">View Project <span>↗</span></span>
+          </div>
+        </article>
+
+        <article class="project-card" data-url="PROJECT3.html" data-title="E-Commerce Interface" data-category="UI/UX / Prototyping" data-desc="Interactive prototype for a local online shop featuring intuitive product filter interactions.">
+          <div class="project-card-image">
+            <img src="./images/project-3.png" alt="E-Commerce Interface" loading="lazy">
+            <span class="project-tag">UI/UX / Prototyping</span>
+          </div>
+          <div class="project-card-content">
+            <h3 class="project-card-title">E-Commerce Interface</h3>
+            <p class="project-card-desc">Interactive prototype for a local online shop featuring intuitive product filter interactions.</p>
+            <span class="project-link">View Project <span>↗</span></span>
+          </div>
+        </article>
+
+        <article class="project-card" data-url="PROJECT4.html" data-title="Personal Portfolio V1" data-category="Front-End Development" data-desc="First iteration of my portfolio site built using clean HTML, modern CSS flexbox and grid.">
+          <div class="project-card-image">
+            <img src="./images/project-4.png" alt="INK & QUILL" loading="lazy">
+            <span class="project-tag">Front-End Development</span>
+          </div>
+          <div class="project-card-content">
+            <h3 class="project-card-title">INK & QUILL</h3>
+            <p class="project-card-desc">Is a collaborative literary haven where aspiring authors refine their craft and readers discover their next favorite book.</p>
+            <span class="project-link">View Project <span>↗</span></span>
+          </div>
+        </article>
+
+        <article class="project-card" data-url="PROJECT5.html" data-title="Coffee Shop Landing Page" data-category="Web Design" data-desc="Minimalist landing page design for a local cafe highlighting menu offerings and online booking.">
+          <div class="project-card-image">
+            <img src="./images/project-5.png" alt="Coffee Shop Landing Page" loading="lazy">
+            <span class="project-tag">Web Design</span>
+          </div>
+          <div class="project-card-content">
+            <h3 class="project-card-title">Coffee Shop Landing Page</h3>
+            <p class="project-card-desc">Minimalist landing page design for a local cafe highlighting menu offerings and online booking.</p>
+            <span class="project-link">View Project <span>↗</span></span>
+          </div>
+        </article>
+
+        <article class="project-card" data-url="PROJECT6.html" data-title="Task Manager App Prototype" data-category="UI/UX Design" data-desc="Clean mobile workspace UI tailored for productivity tracking and seamless daily scheduling.">
+          <div class="project-card-image">
+            <img src="./images/project-6.png" alt="Task Manager App" loading="lazy">
+            <span class="project-tag">UI/UX Design</span>
+          </div>
+          <div class="project-card-content">
+            <h3 class="project-card-title">Task Manager App</h3>
+            <p class="project-card-desc">Clean mobile workspace UI tailored for productivity tracking and seamless daily scheduling.</p>
+            <span class="project-link">View Project <span>↗</span></span>
+          </div>
+        </article>
+      </div>
+
+      <button class="nav-btn next-btn" id="nextBtn" aria-label="Next Project">&#10095;</button>
+    </div>
+
+    <!-- Modal for Project Details -->
+    <div class="project-modal" id="projectModal">
+      <div class="modal-content">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <span class="modal-category" id="modalCategory">Category</span>
+        <h3 id="modalTitle">Project Title</h3>
+        <p id="modalDesc">Project description goes here...</p>
+        <a href="#" id="modalLink" target="_blank" class="btn-primary">Visit Live Project <span>↗</span></a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 4: EDUCATION -->
+<section class="education" id="education">
+  <div class="education-inner">
+
+    <div class="education-header">
+      <div>
+        <div class="section-eyebrow">
+          <div class="eyebrow-dot"></div>
+          <span>Voyage of Knowledge</span>
+        </div>
+
+        <h2 class="section-heading">
+          Education & <span class="accent">Qualifications</span>
+          <span class="star">✦</span>
+        </h2>
+      </div>
+
+      <p class="education-intro">
+        My academic timeline has laid a strong foundation in visual design, interactive technology, computer science, and creative problem solving.
+      </p>
+    </div>
+
+    <div class="education-grid">
+
+      <article class="education-card">
+        <div class="education-card-top">
+          <span class="education-year">2020 — 2024</span>
+          <span class="education-status">Completed</span>
+        </div>
+
+        <div class="education-content">
+          <span class="education-program">BS Information Technology</span>
+          <h3 class="education-degree">Bachelor of Science in Information Technology</h3>
+          <p class="education-school">Data Center College of the Philippines — Baguio</p>
+          <p class="education-description">
+            Specialized in user interface design, front-end web technologies, application development, and human-computer interaction principles.
+          </p>
+        </div>
+      </article>
+
+      <article class="education-card">
+        <div class="education-card-top">
+          <span class="education-year">2018 — 2020</span>
+          <span class="education-status">Completed</span>
+        </div>
+
+        <div class="education-content">
+          <span class="education-program">ICT Strand</span>
+          <h3 class="education-degree">Information & Communications Technology</h3>
+          <p class="education-school">Data Center College of the Philippines — Baguio</p>
+          <p class="education-description">
+            Focused on foundational web development, digital arts, graphic design systems, and practical computer programming.
+          </p>
+        </div>
+      </article>
+
+      <article class="education-card">
+        <div class="education-card-top">
+          <span class="education-year">2014 — 2018</span>
+          <span class="education-status">Completed</span>
+        </div>
+
+        <div class="education-content">
+          <span class="education-program">Secondary Education</span>
+          <h3 class="education-degree">High School Diploma</h3>
+          <p class="education-school">Alejo M. Pacalso Memorial National High School</p>
+          <p class="education-description">
+            Built essential core skills in visual communication, creative arts, collaborative projects, and analytical thinking.
+          </p>
+        </div>
+      </article>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 5: ABOUT ME -->
+<section class="about" id="about">
+  <div class="about-inner">
+
+    <div class="about-photo">
+      <img src="./images/aboutme.jfif" alt="Lyka Althea Alintog" class="about-photo-image">
+      <div class="about-label">BSIT Student</div>
+    </div>
+
+    <div class="about-content">
+      <div class="section-eyebrow">
+        <div class="eyebrow-dot"></div>
+        <span>The Person Behind the Projects</span>
+      </div>
+
+      <h2 class="section-heading">
+        Who is <span class="accent">Lyka Althea Alintog</span>?
+        <span class="star">✦</span>
+      </h2>
+
+      <p class="about-text">
+        Hello! I'm Lyka Althea Alintog — a BSIT student passionate about front-end 
+        web development and UI/UX design. I enjoy turning creative ideas into functional 
+        and visually appealing digital interfaces.
+      </p>
+
+      <p class="about-text">
+        Through my coursework and personal projects, I continue to build my skills 
+        in HTML, CSS, JavaScript, and user-centered design principles to prepare 
+        for a career in IT and product design.
+      </p>
+
+      <div class="about-highlights">
+        <div class="about-highlight">
+          <span class="about-highlight-num">BSIT</span>
+          <span class="about-highlight-label">Degree Program</span>
+        </div>
+
+        <div class="about-highlight">
+          <span class="about-highlight-num">5+</span>
+          <span class="about-highlight-label">Projects Built</span>
+        </div>
+
+        <div class="about-highlight">
+          <span class="about-highlight-num">3+</span>
+          <span class="about-highlight-label">Years Coding & Design</span>
+        </div>
+
+        <div class="about-highlight">
+          <span class="about-highlight-num">100%</span>
+          <span class="about-highlight-label">Dedication</span>
+        </div>
+      </div>
+
+      <a href="./Lyka_Althea_Alintog_Resume.pdf" class="btn-primary" download="Lyka_Althea_Alintog_Resume.pdf">Download Resume <span aria-hidden="true">↓</span></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 6: CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+
+    <div class="section-eyebrow">
+      <div class="eyebrow-dot"></div>
+      <span>Get In Touch</span>
+    </div>
+
+    <h2 class="contact-heading">
+      Let's Work <span>Together.</span>
+    </h2>
+
+    <p>
+      Whether you have a project in mind, an opportunity, or just want to connect, 
+      feel free to reach out!
+    </p>
+
+    <div class="contact-info-list" style="margin-bottom: 20px; display: flex; flex-direction: column; gap: 8px; font-weight: 500; font-size: 14px;">
+      <div>📍 Baguio City, Philippines</div>
+      <div>📧 lykaalthea@example.com</div>
+      <div>📞 +63 900 000 0000</div>
+    </div>
+
+    <a href="mailto:lykaalthea@example.com" class="btn-primary">Send a Message →</a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="#home" class="nav-logo footer-logo">
+    <div class="nav-logo-icon" aria-hidden="true"><svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M4 24 2.6 10.5 10.4 16.4 16 6.5 21.6 16.4 29.4 10.5 28 24Z" fill="url(#crown-gold)"/><rect x="4" y="25.6" width="24" height="3.6" rx="1.4" fill="url(#crown-gold)"/><circle cx="2.6" cy="9.4" r="1.9" fill="url(#crown-gold)"/><circle cx="16" cy="5.2" r="2.1" fill="url(#crown-gold)"/><circle cx="29.4" cy="9.4" r="1.9" fill="url(#crown-gold)"/><path d="M16 12.2 18 17.2 16 22.2 14 17.2Z" fill="#fff" opacity=".4"/></svg></div>
+    <span class="nav-logo-text">Lyka<span class="nav-logo-dot">.</span></span>
+  </a>
+
+  <p class="footer-copy">
+    © 2026 Lyka Althea Alintog. All rights reserved.
+  </p>
+
+  <div class="footer-socials">
+    <a href="#" class="social-icon" aria-label="Facebook">
+      <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+    </a>
+    <a href="#" class="social-icon" aria-label="Twitter">
+      <svg viewBox="0 0 24 24"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+    </a>
+    <a href="#" class="social-icon" aria-label="LinkedIn">
+      <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    </a>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    // Mobile Nav Toggle & Body Scroll Locking
+    const menuToggle = document.getElementById('menu-toggle');
+
+    menuToggle.addEventListener('change', () => {
+      if (menuToggle.checked) {
+        document.body.classList.add('no-scroll');
+      } else {
+        document.body.classList.remove('no-scroll');
+      }
+    });
+
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        menuToggle.checked = false;
+        document.body.classList.remove('no-scroll');
+      });
+    });
+
+    // Active Section Tracking for Side Dots & Navigation Links
+    const sections = document.querySelectorAll('section');
+    const sideNavBtns = document.querySelectorAll('.section-nav-btn');
+    const navHeaderLinks = document.querySelectorAll('.nav-links a');
+
+    const observerOptions = {
+      root: null,
+      threshold: 0.5
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+
+          sideNavBtns.forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('href') === `#${id}`);
+          });
+
+          navHeaderLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
+
+    // 3D Carousel Implementation
+    const carousel = document.getElementById('carousel');
+    const cards = carousel.querySelectorAll('.project-card');
+    const totalProjects = cards.length;
+    const angleStep = 360 / totalProjects;
+    
+    function getRadius() {
+      return window.innerWidth < 600 ? 320 : window.innerWidth < 1024 ? 450 : 520;
+    }
+
+    let radius = getRadius();
+    let currentIndex = 0;
+
+    function positionCards() {
+      cards.forEach((card, index) => {
+        const angle = index * angleStep;
+        card.style.transform = `rotateY(${angle}deg) translateZ(${radius}px)`;
+      });
+    }
+
+    function rotateCarousel() {
+      const currentAngle = currentIndex * -angleStep;
+      carousel.style.transform = `translateZ(-${radius}px) rotateY(${currentAngle}deg)`;
+    }
+
+    positionCards();
+    rotateCarousel(); // apply the -translateZ offset on load, not only after the first click
+
+    window.addEventListener('resize', () => {
+      radius = getRadius();
+      positionCards();
+      rotateCarousel();
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentIndex++;
+      rotateCarousel();
+    });
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      currentIndex--;
+      rotateCarousel();
+    });
+
+    // Modal elements
+    const modal = document.getElementById('projectModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalLink = document.getElementById('modalLink');
+    const closeModal = document.getElementById('closeModal');
+
+    cards.forEach(card => {
+      card.addEventListener('click', () => {
+        modalTitle.textContent = card.dataset.title || 'Project Details';
+        modalCategory.textContent = card.dataset.category || 'Portfolio Item';
+        modalDesc.textContent = card.dataset.desc || 'No detailed description available.';
+        modalLink.href = card.dataset.url || '#';
+        modal.classList.add('active');
+      });
+    });
+
+    closeModal.addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('active');
+    });
+
+    // Accordion Animation for Services
+    function spawnRipple(item, e) {
+      const rect = item.getBoundingClientRect();
+      const size = Math.max(rect.width, 240) * 1.1;
+      // keyboard activation reports 0,0 -> ripple from the toggle side instead
+      const fromKeyboard = e.clientX === 0 && e.clientY === 0;
+      const x = fromKeyboard ? rect.width - 40 : e.clientX - rect.left;
+      const y = fromKeyboard ? 36 : e.clientY - rect.top;
+
+      const ripple = document.createElement('span');
+      ripple.className = 'service-ripple';
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (x - size / 2) + 'px';
+      ripple.style.top = (y - size / 2) + 'px';
+      item.appendChild(ripple);
+      ripple.addEventListener('animationend', () => ripple.remove());
+    }
+
+    document.querySelectorAll('.service-item').forEach((detail) => {
+      const summary = detail.querySelector('.service-header');
+      let closeTimer;
+
+      summary.addEventListener('click', (e) => {
+        e.preventDefault();
+        spawnRipple(detail, e);
+
+        if (detail.classList.contains('is-open')) {
+          detail.classList.remove('is-open');
+          // keep [open] until the collapse finishes, otherwise the browser hides the content instantly
+          closeTimer = setTimeout(() => detail.removeAttribute('open'), 500);
+        } else {
+          clearTimeout(closeTimer);
+          detail.setAttribute('open', '');
+          void detail.offsetHeight; // flush styles so the transition starts from the collapsed state
+          detail.classList.add('is-open');
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

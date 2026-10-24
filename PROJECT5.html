@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Brew | Artisan Coffee & Roastery</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Google Fonts: Playfair Display & Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,500;0,700;0,800;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        coffee: {
+                            50: '#fdfbf7',
+                            100: '#f7f1e5',
+                            200: '#ebdcc3',
+                            300: '#dcbf98',
+                            400: '#cb9f6e',
+                            500: '#bc834d',
+                            600: '#a3673c',
+                            700: '#854d33',
+                            800: '#6d3e2d',
+                            900: '#583327',
+                            950: '#2f1812',
+                        },
+                        cream: {
+                            50: '#fcfbf7',
+                            100: '#f8f5eb',
+                            200: '#f1ebd8',
+                            300: '#e6dabf',
+                        },
+                        roast: {
+                            amber: '#d97706',
+                            terracotta: '#c2410c',
+                            espresso: '#1c100b',
+                        }
+                    },
+                    boxShadow: {
+                        'glass': '0 8px 32px 0 rgba(47, 24, 18, 0.08)',
+                        'glow-coffee': '0 0 25px rgba(188, 131, 77, 0.25)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(133, 77, 51, 0.3);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(133, 77, 51, 0.6);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(235, 220, 195, 0.5);
+        }
+        .dark .glass-card {
+            background: rgba(28, 16, 11, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(109, 62, 45, 0.3);
+        }
+
+        /* Figma Overlay Inspection Mode */
+        .figma-inspecting *:hover {
+            outline: 2px dashed #bc834d !important;
+            outline-offset: 2px;
+            cursor: crosshair !important;
+        }
+
+        /* Wireframe Mode Grid Overlay */
+        .show-wireframe {
+            background-image: radial-gradient(rgba(188, 131, 77, 0.15) 1px, transparent 0);
+            background-size: 16px 16px;
+        }
+
+        @keyframes floatSteam {
+            0% { transform: translateY(0px) scale(1); opacity: 0.6; }
+            50% { transform: translateY(-8px) scale(1.05); opacity: 0.9; }
+            100% { transform: translateY(-16px) scale(1.1); opacity: 0; }
+        }
+        .animate-steam {
+            animation: floatSteam 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+
+<body class="bg-coffee-50 dark:bg-roast-espresso text-coffee-950 dark:text-cream-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-20 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <header class="sticky top-0 z-40 bg-coffee-50/90 dark:bg-roast-espresso/90 backdrop-blur-md border-b border-coffee-200/60 dark:border-coffee-900/60 transition-colors">
+        
+        <!-- Live Store Status Banner -->
+        <div class="bg-gradient-to-r from-coffee-900 via-coffee-800 to-roast-espresso text-cream-100 text-[11px] py-1.5 px-4 text-center flex items-center justify-center gap-2 font-medium">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span>Aura Brew Main Cafe: <strong class="text-coffee-300">Open Now</strong> until 9:00 PM • Today's Special Bean: <span class="text-roast-amber font-semibold">Ethiopia Yirgacheffe Natural</span></span>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-coffee-600 to-coffee-800 flex items-center justify-center text-cream-100 shadow-md shadow-coffee-700/20 group-hover:scale-105 transition duration-300">
+                    <i class="fa-solid fa-mug-hot text-lg text-coffee-200"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-serif font-bold text-xl tracking-tight text-coffee-900 dark:text-cream-100">AURA BREW</span>
+                    <span class="text-[9px] font-mono tracking-widest text-coffee-500 uppercase -mt-1 font-semibold">Artisan Roastery</span>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-xs font-semibold text-coffee-800 dark:text-cream-200">
+                <a href="#menu" class="hover:text-coffee-600 dark:hover:text-coffee-300 transition">Menu</a>
+                <a href="#craftsmanship" class="hover:text-coffee-600 dark:hover:text-coffee-300 transition">Our Craft</a>
+                <a href="#subscriptions" class="hover:text-coffee-600 dark:hover:text-coffee-300 transition">Subscriptions</a>
+                <a href="#locations" class="hover:text-coffee-600 dark:hover:text-coffee-300 transition">Locations</a>
+                <a href="#reviews" class="hover:text-coffee-600 dark:hover:text-coffee-300 transition">Community</a>
+            </nav>
+
+            <!-- Action Controls -->
+            <div class="flex items-center space-x-3">
+                <!-- Figma Specs Mode Toggle -->
+                <button onclick="toggleFigmaMode()" id="figma-toggle-btn" class="px-2.5 py-1.5 rounded-xl border border-coffee-400/30 bg-coffee-100/60 dark:bg-coffee-900/40 text-coffee-800 dark:text-coffee-200 hover:bg-coffee-600 hover:text-white transition text-xs font-semibold flex items-center space-x-1.5 shadow-sm" title="Toggle UI/UX Figma Design Specs">
+                    <i class="fa-brands fa-figma text-sm text-coffee-600 dark:text-coffee-300"></i>
+                    <span class="hidden xl:inline">Figma Specs</span>
+                </button>
+
+                <!-- Theme Switcher -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded-xl text-coffee-700 dark:text-coffee-300 hover:bg-coffee-200/50 dark:hover:bg-coffee-900/50 transition">
+                    <i class="fa-solid fa-sun hidden dark:block text-amber-400"></i>
+                    <i class="fa-solid fa-moon block dark:hidden text-coffee-800"></i>
+                </button>
+
+                <!-- Cart Toggle Button -->
+                <button onclick="toggleCartDrawer()" class="px-3.5 py-2 rounded-xl bg-coffee-800 hover:bg-coffee-700 text-cream-100 font-semibold text-xs flex items-center space-x-2 shadow-md shadow-coffee-900/20 transition relative">
+                    <i class="fa-solid fa-basket-shopping text-coffee-300"></i>
+                    <span class="hidden sm:inline">Order Bag</span>
+                    <span id="cart-badge" class="bg-coffee-500 text-white px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold">0</span>
+                </button>
+            </div>
+
+        </div>
+    </header>
+
+    <section class="relative bg-gradient-to-b from-coffee-100/60 via-coffee-50 to-transparent dark:from-coffee-950 dark:via-roast-espresso dark:to-roast-espresso py-12 lg:py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-coffee-200/60 dark:bg-coffee-900/60 border border-coffee-300/50 dark:border-coffee-700/50 text-coffee-800 dark:text-coffee-200 text-xs font-medium">
+                    <i class="fa-solid fa-award text-roast-amber"></i>
+                    <span>100% Specialty Arabica • Direct Trade Sourced</span>
+                </div>
+
+                <h1 class="text-4xl sm:text-6xl font-serif font-extrabold tracking-tight text-coffee-950 dark:text-cream-50 leading-[1.15]">
+                    Engineered for <br>
+                    <span class="bg-gradient-to-r from-coffee-700 via-coffee-500 to-roast-amber bg-clip-text text-transparent italic">The Perfect Brew.</span>
+                </h1>
+
+                <p class="text-sm sm:text-base text-coffee-800/80 dark:text-cream-200/80 max-w-xl leading-relaxed">
+                    Sourced from high-altitude micro-lots in Huila and Yirgacheffe. Precision roasted daily in small batches for expressive acidity, rich velvety texture, and lingering aromatic depth.
+                </p>
+
+                <!-- Hero Interactive CTA & Tags -->
+                <div class="flex flex-wrap items-center gap-4 pt-2">
+                    <a href="#menu" class="px-6 py-3.5 rounded-2xl bg-coffee-800 hover:bg-coffee-700 text-cream-100 font-semibold text-xs shadow-lg shadow-coffee-800/25 transition flex items-center space-x-2">
+                        <span>Explore Menu</span>
+                        <i class="fa-solid fa-arrow-down text-xs text-coffee-300"></i>
+                    </a>
+                    <a href="#subscriptions" class="px-6 py-3.5 rounded-2xl bg-white dark:bg-coffee-900/80 text-coffee-900 dark:text-cream-100 border border-coffee-200 dark:border-coffee-700 hover:bg-coffee-100 dark:hover:bg-coffee-800 font-semibold text-xs transition flex items-center space-x-2">
+                        <i class="fa-solid fa-box-open text-coffee-500"></i>
+                        <span>Custom Subscription</span>
+                    </a>
+                </div>
+
+                <!-- Live Coffee Stats -->
+                <div class="grid grid-cols-3 gap-4 pt-6 border-t border-coffee-200/60 dark:border-coffee-900/60 max-w-md">
+                    <div>
+                        <div class="text-2xl font-serif font-bold text-coffee-900 dark:text-cream-100">88.5+</div>
+                        <div class="text-[11px] text-coffee-600 dark:text-coffee-400 font-medium">SCA Cup Score</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-serif font-bold text-coffee-900 dark:text-cream-100">48 hrs</div>
+                        <div class="text-[11px] text-coffee-600 dark:text-coffee-400 font-medium">Post-Roast Freshness</div>
+                    </div>
+                    <div>
+                        <div class="text-2xl font-serif font-bold text-coffee-900 dark:text-cream-100">100%</div>
+                        <div class="text-[11px] text-coffee-600 dark:text-coffee-400 font-medium">Compostable Bags</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Hero Image Preview Card with Micro-tags -->
+            <div class="lg:col-span-5 relative flex justify-center">
+                <div class="glass-card p-4 rounded-3xl border border-coffee-200/80 dark:border-coffee-800/60 max-w-md w-full shadow-2xl relative overflow-hidden group">
+                    
+                    <div class="relative rounded-2xl overflow-hidden h-80 bg-coffee-900">
+                        <img id="hero-img" src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=800" alt="Specialty Pour Over Coffee" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-roast-espresso/80 via-transparent to-transparent"></div>
+                        
+                        <!-- Floating Origin Badge Overlay -->
+                        <div class="absolute bottom-4 left-4 right-4 bg-coffee-950/80 backdrop-blur-md p-3.5 rounded-2xl border border-coffee-700/50 flex items-center justify-between">
+                            <div>
+                                <span class="text-[10px] font-mono text-coffee-400 uppercase font-bold tracking-wider block">Signature Origin</span>
+                                <span class="text-xs font-serif font-bold text-cream-100">Ethiopian Yirgacheffe G1</span>
+                                <div class="text-[10px] text-cream-300 font-mono">Notes: Bergamot, Jasmine, Honey</div>
+                            </div>
+                            <button onclick="addToOrder(1, 'Medium')" class="w-9 h-9 rounded-xl bg-coffee-600 hover:bg-coffee-500 text-white flex items-center justify-center transition shadow-md">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <main id="menu" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full">
+        
+        <div class="text-center max-w-2xl mx-auto mb-10 space-y-2">
+            <span class="text-xs font-mono text-coffee-600 dark:text-coffee-400 uppercase tracking-widest font-bold">Curated Selections</span>
+            <h2 class="text-3xl font-serif font-extrabold text-coffee-950 dark:text-cream-100">Artisan Coffee & Kitchen Menu</h2>
+            <p class="text-xs sm:text-sm text-coffee-800/80 dark:text-cream-300/80">Select from our freshly roasted espresso drinks, single-origin pour overs, and cold brews crafted with organic oat milk alternatives.</p>
+        </div>
+
+        <!-- Menu Category Tabs -->
+        <div class="flex items-center justify-center space-x-2 overflow-x-auto pb-6">
+            <button onclick="filterMenu('All', this)" class="menu-tab-btn px-4 py-2 rounded-xl bg-coffee-800 text-cream-100 text-xs font-semibold shadow-sm transition">All Items</button>
+            <button onclick="filterMenu('Espresso', this)" class="menu-tab-btn px-4 py-2 rounded-xl bg-coffee-100 dark:bg-coffee-900/60 text-coffee-800 dark:text-cream-200 text-xs font-semibold hover:bg-coffee-200 transition">Espresso</button>
+            <button onclick="filterMenu('Cold Brew', this)" class="menu-tab-btn px-4 py-2 rounded-xl bg-coffee-100 dark:bg-coffee-900/60 text-coffee-800 dark:text-cream-200 text-xs font-semibold hover:bg-coffee-200 transition">Cold Brews</button>
+            <button onclick="filterMenu('Pour Over', this)" class="menu-tab-btn px-4 py-2 rounded-xl bg-coffee-100 dark:bg-coffee-900/60 text-coffee-800 dark:text-cream-200 text-xs font-semibold hover:bg-coffee-200 transition">Pour Over</button>
+            <button onclick="filterMenu('Pastries', this)" class="menu-tab-btn px-4 py-2 rounded-xl bg-coffee-100 dark:bg-coffee-900/60 text-coffee-800 dark:text-cream-200 text-xs font-semibold hover:bg-coffee-200 transition">Pastries & Bakery</button>
+        </div>
+
+        <!-- Product Cards Container Grid -->
+        <div id="coffee-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4"></div>
+
+    </main>
+
+    <section id="craftsmanship" class="bg-coffee-100/50 dark:bg-coffee-950/60 py-16 px-4 sm:px-6 lg:px-8 border-y border-coffee-200/60 dark:border-coffee-900/60">
+        <div class="max-w-7xl mx-auto space-y-12">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="text-xs font-mono text-coffee-600 dark:text-coffee-400 uppercase tracking-widest font-bold">Traceability & Excellence</span>
+                <h2 class="text-3xl font-serif font-extrabold text-coffee-950 dark:text-cream-100">The Farm-to-Cup Journey</h2>
+                <p class="text-xs sm:text-sm text-coffee-800/80 dark:text-cream-300/80">We work directly with smallholder farmers to guarantee fair wages, sustainable soil health, and pristine bean selection.</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-6">
+                <!-- Step 1 -->
+                <div class="glass-card p-6 rounded-3xl border border-coffee-200/60 dark:border-coffee-800/60 space-y-3 relative">
+                    <div class="w-10 h-10 rounded-2xl bg-coffee-200 dark:bg-coffee-900 text-coffee-800 dark:text-coffee-200 font-mono font-bold text-sm flex items-center justify-center">01</div>
+                    <h3 class="font-serif font-bold text-base text-coffee-900 dark:text-cream-100">Direct Sourcing</h3>
+                    <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 leading-relaxed">Hand-selected red cherries cultivated above 1,800m elevation in volcanic soils.</p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-card p-6 rounded-3xl border border-coffee-200/60 dark:border-coffee-800/60 space-y-3 relative">
+                    <div class="w-10 h-10 rounded-2xl bg-coffee-200 dark:bg-coffee-900 text-coffee-800 dark:text-coffee-200 font-mono font-bold text-sm flex items-center justify-center">02</div>
+                    <h3 class="font-serif font-bold text-base text-coffee-900 dark:text-cream-100">Micro-Batch Roasting</h3>
+                    <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 leading-relaxed">Profile-roasted on Loring air roasters to highlight distinct terroir characteristics.</p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-card p-6 rounded-3xl border border-coffee-200/60 dark:border-coffee-800/60 space-y-3 relative">
+                    <div class="w-10 h-10 rounded-2xl bg-coffee-200 dark:bg-coffee-900 text-coffee-800 dark:text-coffee-200 font-mono font-bold text-sm flex items-center justify-center">03</div>
+                    <h3 class="font-serif font-bold text-base text-coffee-900 dark:text-cream-100">Precision Dialing</h3>
+                    <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 leading-relaxed">Water chemistry conditioned to 130 TDS with precise pressure profiling on La Marzocco KB90.</p>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="glass-card p-6 rounded-3xl border border-coffee-200/60 dark:border-coffee-800/60 space-y-3 relative">
+                    <div class="w-10 h-10 rounded-2xl bg-coffee-200 dark:bg-coffee-900 text-coffee-800 dark:text-coffee-200 font-mono font-bold text-sm flex items-center justify-center">04</div>
+                    <h3 class="font-serif font-bold text-base text-coffee-900 dark:text-cream-100">Sustainable Cup</h3>
+                    <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 leading-relaxed">Served in plant-fiber cups or eco ceramic pottery with zero landfill footprint.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="subscriptions" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="glass-card p-6 sm:p-10 rounded-3xl border border-coffee-200 dark:border-coffee-800 shadow-xl grid lg:grid-cols-12 gap-8 items-center">
+            
+            <div class="lg:col-span-6 space-y-4">
+                <span class="text-xs font-mono text-coffee-600 dark:text-coffee-400 uppercase tracking-widest font-bold">Never Run Out</span>
+                <h2 class="text-3xl font-serif font-extrabold text-coffee-950 dark:text-cream-100">Custom Coffee Club Subscription</h2>
+                <p class="text-xs sm:text-sm text-coffee-800/80 dark:text-cream-300/80 leading-relaxed">
+                    Freshly roasted whole beans delivered directly to your door on your schedule. Enjoy 15% savings, exclusive micro-lot access, and free express shipping.
+                </p>
+
+                <!-- Configurator Controls -->
+                <div class="space-y-4 pt-2">
+                    
+                    <!-- 1. Bean Select -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-coffee-900 dark:text-cream-200">1. Select Bean Origin</label>
+                        <select id="sub-bean-select" onchange="calculateSubscriptionPrice()" class="w-full text-xs p-3 rounded-xl bg-coffee-100 dark:bg-coffee-900/80 border border-coffee-200 dark:border-coffee-700 text-coffee-900 dark:text-cream-100 font-medium focus:ring-2 focus:ring-coffee-500">
+                            <option value="18">House Blend • Velvet Dark Roast ($18.00)</option>
+                            <option value="22" selected>Ethiopia Yirgacheffe • Floral & Citrus ($22.00)</option>
+                            <option value="24">Colombia Huila Reserve • Chocolate & Hazelnut ($24.00)</option>
+                        </select>
+                    </div>
+
+                    <!-- 2. Grind Type -->
+                    <div class="space-y-1.5">
+                        <label class="text-xs font-bold text-coffee-900 dark:text-cream-200">2. Select Grind Style</label>
+                        <div class="grid grid-cols-3 gap-2 text-xs font-medium">
+                            <button onclick="setSubGrind('Whole Bean', this)" class="sub-grind-btn p-2.5 rounded-xl border border-coffee-500 bg-coffee-800 text-white font-semibold">Whole Bean</button>
+                            <button onclick="setSubGrind('Espresso', this)" class="sub-grind-btn p-2.5 rounded-xl border border-coffee-200 dark:border-coffee-700 bg-coffee-50 dark:bg-coffee-900/40 text-coffee-800 dark:text-cream-200">Espresso Grind</button>
+                            <button onclick="setSubGrind('Filter/Drip', this)" class="sub-grind-btn p-2.5 rounded-xl border border-coffee-200 dark:border-coffee-700 bg-coffee-50 dark:bg-coffee-900/40 text-coffee-800 dark:text-cream-200">Filter / Drip</button>
+                        </div>
+                    </div>
+
+                    <!-- 3. Frequency & Quantity -->
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-coffee-900 dark:text-cream-200">Frequency</label>
+                            <select id="sub-freq-select" onchange="calculateSubscriptionPrice()" class="w-full text-xs p-3 rounded-xl bg-coffee-100 dark:bg-coffee-900/80 border border-coffee-200 dark:border-coffee-700 text-coffee-900 dark:text-cream-100 font-medium">
+                                <option value="1">Every Week (-15%)</option>
+                                <option value="2" selected>Every 2 Weeks (-10%)</option>
+                                <option value="4">Monthly (-5%)</option>
+                            </select>
+                        </div>
+                        <div class="space-y-1.5">
+                            <label class="text-xs font-bold text-coffee-900 dark:text-cream-200">Bags (12 oz)</label>
+                            <div class="flex items-center bg-coffee-100 dark:bg-coffee-900/80 rounded-xl p-1 border border-coffee-200 dark:border-coffee-700">
+                                <button onclick="adjustSubBags(-1)" class="w-8 h-8 rounded-lg bg-white dark:bg-coffee-800 font-bold text-xs">-</button>
+                                <span id="sub-bags-count" class="flex-1 text-center font-mono font-bold text-xs">2</span>
+                                <button onclick="adjustSubBags(1)" class="w-8 h-8 rounded-lg bg-white dark:bg-coffee-800 font-bold text-xs">+</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Price Output & Checkout Trigger Card -->
+            <div class="lg:col-span-6 bg-coffee-900 text-cream-100 p-6 sm:p-8 rounded-3xl space-y-5 border border-coffee-700 shadow-2xl relative">
+                <div class="flex justify-between items-center border-b border-coffee-800 pb-3">
+                    <span class="text-xs font-mono uppercase tracking-wider text-coffee-400">Subscription Summary</span>
+                    <span class="bg-roast-amber text-roast-espresso font-mono font-bold text-[10px] px-2.5 py-0.5 rounded-full">15% SAVINGS</span>
+                </div>
+
+                <div class="space-y-2 text-xs font-mono text-cream-200">
+                    <div class="flex justify-between"><span>Base Price:</span><span id="sub-base-price" class="text-white font-bold">$44.00</span></div>
+                    <div class="flex justify-between text-emerald-400"><span>Club Discount:</span><span id="sub-discount">-$6.60</span></div>
+                    <div class="flex justify-between"><span>Express Shipping:</span><span class="text-emerald-400 font-bold">FREE</span></div>
+                    <div class="flex justify-between pt-3 border-t border-coffee-800 text-base font-serif font-bold text-white">
+                        <span>Total per Shipment:</span>
+                        <span id="sub-total-price" class="font-mono text-coffee-300">$37.40</span>
+                    </div>
+                </div>
+
+                <button onclick="addSubscriptionToCart()" class="w-full py-3.5 bg-gradient-to-r from-coffee-500 to-roast-amber hover:from-coffee-400 hover:to-roast-amber text-roast-espresso font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-truck-fast"></i>
+                    <span>Start Subscription</span>
+                </button>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="locations" class="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        <div class="text-center max-w-xl mx-auto mb-10 space-y-2">
+            <span class="text-xs font-mono text-coffee-600 dark:text-coffee-400 uppercase tracking-widest font-bold">Find Your Sanctuary</span>
+            <h2 class="text-3xl font-serif font-extrabold text-coffee-950 dark:text-cream-100">Café Locations & Hours</h2>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-8">
+            <div class="lg:col-span-5 space-y-4">
+                <div onclick="selectLocation(0, this)" class="location-card glass-card p-4 rounded-2xl border-2 border-coffee-500 cursor-pointer transition">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-serif font-bold text-sm text-coffee-900 dark:text-cream-100">Flagship Roastery • Downtown</h3>
+                        <span class="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full">OPEN NOW</span>
+                    </div>
+                    <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 mt-1">452 Espresso Way, Coffee District</p>
+                    <div class="text-[11px] font-mono text-coffee-500 mt-2">Hours: Mon-Sun 7:00 AM - 9:00 PM</div>
+                </div>
+
+                <div onclick="selectLocation(1, this)" class="location-card glass-card p-4 rounded-2xl border border-coffee-200 dark:border-coffee-800 cursor-pointer hover:border-coffee-400 transition">
+                    <div class="flex justify-between items-start">
+                        <h3 class="font-serif font-bold text-sm text-coffee-900 dark:text-cream-100">Arts District Brew Bar</h3>
+                        <span class="bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full">OPEN NOW</span>
+                    </div>
+                    <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 mt-1">882 Artisan Ave, Studio 4</p>
+                    <div class="text-[11px] font-mono text-coffee-500 mt-2">Hours: Mon-Sat 8:00 AM - 8:00 PM</div>
+                </div>
+            </div>
+
+            <!-- Simulated Map Widget Preview -->
+            <div class="lg:col-span-7 glass-card rounded-3xl p-2 border border-coffee-200 dark:border-coffee-800 h-80 relative overflow-hidden flex items-center justify-center bg-coffee-900">
+                <img id="location-map-img" src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800" alt="Map View" class="w-full h-full object-cover opacity-60">
+                <div class="absolute bg-coffee-950/90 text-white px-4 py-3 rounded-2xl border border-coffee-700 shadow-xl text-center space-y-1">
+                    <i class="fa-solid fa-location-dot text-roast-amber text-lg"></i>
+                    <div id="map-label-name" class="font-serif font-bold text-xs">Flagship Roastery • Downtown</div>
+                    <div class="text-[10px] font-mono text-coffee-300">Click location card to switch view</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="bg-coffee-100/40 dark:bg-coffee-950/40 py-16 px-4 sm:px-6 lg:px-8 border-t border-coffee-200/60 dark:border-coffee-900/60">
+        <div class="max-w-7xl mx-auto space-y-8">
+            <div class="text-center max-w-xl mx-auto space-y-2">
+                <span class="text-xs font-mono text-coffee-600 dark:text-coffee-400 uppercase tracking-widest font-bold">Community & Culture</span>
+                <h2 class="text-3xl font-serif font-extrabold text-coffee-950 dark:text-cream-100">#AuraBrewMoments</h2>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="relative rounded-2xl overflow-hidden h-48 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-coffee-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-mono">
+                        <i class="fa-brands fa-instagram text-lg mr-2"></i> @coffeelover_sam
+                    </div>
+                </div>
+                <div class="relative rounded-2xl overflow-hidden h-48 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-coffee-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-mono">
+                        <i class="fa-brands fa-instagram text-lg mr-2"></i> @baristadiaries
+                    </div>
+                </div>
+                <div class="relative rounded-2xl overflow-hidden h-48 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-coffee-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-mono">
+                        <i class="fa-brands fa-instagram text-lg mr-2"></i> @morningpour
+                    </div>
+                </div>
+                <div class="relative rounded-2xl overflow-hidden h-48 group cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&q=80&w=400" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                    <div class="absolute inset-0 bg-coffee-950/60 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-white text-xs font-mono">
+                        <i class="fa-brands fa-instagram text-lg mr-2"></i> @roastmaster_alex
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="cart-drawer-overlay" onclick="toggleCartDrawer()" class="fixed inset-0 bg-roast-espresso/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    
+    <aside id="cart-drawer" class="fixed inset-y-0 right-0 z-50 w-full max-w-md bg-coffee-50 dark:bg-roast-espresso border-l border-coffee-200 dark:border-coffee-800 shadow-2xl transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+        
+        <div class="p-5 border-b border-coffee-200 dark:border-coffee-800 flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <i class="fa-solid fa-mug-hot text-coffee-600 text-lg"></i>
+                <h3 class="font-serif font-bold text-base text-coffee-900 dark:text-cream-100">Your Order Bag</h3>
+            </div>
+            <button onclick="toggleCartDrawer()" class="text-coffee-500 hover:text-coffee-900 dark:hover:text-white text-lg">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div id="cart-items-container" class="flex-1 overflow-y-auto p-5 space-y-4 divide-y divide-coffee-200/50 dark:divide-coffee-800">
+            <!-- Dynamically populated cart items -->
+        </div>
+
+        <div class="p-5 border-t border-coffee-200 dark:border-coffee-800 space-y-3 bg-coffee-100/50 dark:bg-coffee-950/50">
+            <div class="space-y-1.5 text-xs text-coffee-800 dark:text-cream-200 font-mono">
+                <div class="flex justify-between"><span>Subtotal:</span><span id="cart-subtotal" class="font-bold">$0.00</span></div>
+                <div class="flex justify-between"><span>Estimated Tax (8%):</span><span id="cart-tax" class="font-bold">$0.00</span></div>
+                <div class="flex justify-between text-sm font-serif font-extrabold text-coffee-950 dark:text-white pt-2 border-t border-coffee-200 dark:border-coffee-800">
+                    <span>Total Amount:</span>
+                    <span id="cart-total" class="font-mono text-coffee-600 dark:text-coffee-300">$0.00</span>
+                </div>
+            </div>
+
+            <button onclick="proceedToCheckout()" class="w-full py-3.5 bg-coffee-800 hover:bg-coffee-700 text-cream-100 font-bold text-xs rounded-xl shadow-lg transition flex items-center justify-center space-x-2">
+                <span>Place Order ($<span id="cart-btn-total">0.00</span>)</span>
+                <i class="fa-solid fa-arrow-right text-xs"></i>
+            </button>
+        </div>
+
+    </aside>
+
+    <aside id="figma-inspector-drawer" class="fixed inset-y-0 left-0 z-50 w-80 bg-roast-espresso text-cream-100 border-r border-coffee-800 p-5 hidden flex-col shrink-0 overflow-y-auto space-y-6 shadow-2xl">
+        <div class="flex items-center justify-between border-b border-coffee-800 pb-3">
+            <div class="flex items-center space-x-2">
+                <i class="fa-brands fa-figma text-coffee-400 text-base"></i>
+                <span class="font-mono text-xs font-bold uppercase tracking-wider text-white">Design Token Inspector</span>
+            </div>
+            <button onclick="toggleFigmaMode()" class="text-coffee-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="space-y-2">
+            <span class="text-[10px] font-mono text-coffee-400 uppercase tracking-wider block">Wireframe Grid Mode</span>
+            <button onclick="toggleWireframeGrid()" class="w-full py-2 bg-coffee-800 hover:bg-coffee-700 text-cream-100 rounded-xl font-mono text-xs font-semibold flex items-center justify-center space-x-2 transition">
+                <i class="fa-solid fa-border-all"></i>
+                <span id="wireframe-btn-text">Toggle Wireframe Overlay</span>
+            </button>
+        </div>
+
+        <div class="space-y-2">
+            <span class="text-[10px] font-mono text-coffee-400 uppercase tracking-wider block">Coffee Color Palette Tokens</span>
+            <div class="grid grid-cols-2 gap-2 text-[10px] font-mono">
+                <div class="bg-coffee-900 p-2 rounded-xl border border-coffee-800 flex items-center space-x-2">
+                    <span class="w-4 h-4 rounded bg-coffee-800"></span>
+                    <div><div class="text-white">coffee-800</div><div class="text-coffee-400">#6d3e2d</div></div>
+                </div>
+                <div class="bg-coffee-900 p-2 rounded-xl border border-coffee-800 flex items-center space-x-2">
+                    <span class="w-4 h-4 rounded bg-coffee-500"></span>
+                    <div><div class="text-white">coffee-500</div><div class="text-coffee-400">#bc834d</div></div>
+                </div>
+                <div class="bg-coffee-900 p-2 rounded-xl border border-coffee-800 flex items-center space-x-2">
+                    <span class="w-4 h-4 rounded bg-roast-amber"></span>
+                    <div><div class="text-white">roast-amber</div><div class="text-coffee-400">#d97706</div></div>
+                </div>
+                <div class="bg-coffee-900 p-2 rounded-xl border border-coffee-800 flex items-center space-x-2">
+                    <span class="w-4 h-4 rounded bg-coffee-50"></span>
+                    <div><div class="text-white">cream-50</div><div class="text-coffee-400">#fcfbf7</div></div>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="copyFigmaTokens()" class="w-full py-2 bg-coffee-600 hover:bg-coffee-500 text-white rounded-xl font-mono text-xs font-semibold flex items-center justify-center space-x-2 transition">
+            <i class="fa-regular fa-copy"></i>
+            <span>Copy CSS Variable Tokens</span>
+        </button>
+    </aside>
+
+    <footer class="bg-roast-espresso text-coffee-400 py-10 border-t border-coffee-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:flex sm:justify-between sm:items-center text-xs space-y-4 sm:space-y-0">
+            <div class="flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-mug-hot text-coffee-500"></i>
+                <span class="font-serif font-bold text-white tracking-wider">AURA BREW ARTISAN ROASTERY</span> • © 2026 UI/UX Prototype
+            </div>
+            <div class="flex justify-center space-x-6 text-coffee-400">
+                <a href="#" class="hover:text-white">SCA Standards</a>
+                <a href="#" class="hover:text-white">Fair Trade Certification</a>
+                <a href="#" class="hover:text-white">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Sample Coffee Dataset
+        const menuData = [
+            {
+                id: 1,
+                name: "Signature Velvet Espresso",
+                category: "Espresso",
+                price: 4.50,
+                rating: 4.9,
+                roastLevel: 4, // 1 to 5 scale
+                notes: ["Dark Chocolate", "Caramel", "Black Cherry"],
+                image: "https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&q=80&w=500",
+                description: "Double shot extracted from our signature Huila beans with rich crema and lingering sweet finish."
+            },
+            {
+                id: 2,
+                name: "Oat Milk Honey Draft Latte",
+                category: "Espresso",
+                price: 5.75,
+                rating: 4.8,
+                roastLevel: 3,
+                notes: ["Honey", "Toasted Oat", "Vanilla"],
+                image: "https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&q=80&w=500",
+                description: "Infused with nitrogen for a silky microfoam texture and sweetened with organic wildflower honey."
+            },
+            {
+                id: 3,
+                name: "Yirgacheffe Pour Over G1",
+                category: "Pour Over",
+                price: 6.25,
+                rating: 5.0,
+                roastLevel: 2,
+                notes: ["Jasmine", "Bergamot", "Lemon Zest"],
+                image: "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&q=80&w=500",
+                description: "Lightly roasted micro-lot brewed on V60 paper filter to accentuate delicate floral aromatics."
+            },
+            {
+                id: 4,
+                name: "24-Hour Nitro Cold Brew",
+                category: "Cold Brew",
+                price: 5.25,
+                rating: 4.7,
+                roastLevel: 4,
+                notes: ["Cacao Nibs", "Molasses", "Hazelnut"],
+                image: "https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&q=80&w=500",
+                description: "Slow steep cold extraction served directly on tap with cascade nitrogen foam."
+            },
+            {
+                id: 5,
+                name: "Organic Kyoto Style Cold Drip",
+                category: "Cold Brew",
+                price: 6.50,
+                rating: 4.9,
+                roastLevel: 3,
+                notes: ["Whiskey Barrel", "Plum", "Dark Cocoa"],
+                image: "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&q=80&w=500",
+                description: "Slowly dripped drop-by-drop over 12 hours through glass towers for a dense, complex body."
+            },
+            {
+                id: 6,
+                name: "Artisan Almond Croissant",
+                category: "Pastries",
+                price: 4.75,
+                rating: 4.8,
+                roastLevel: 0,
+                notes: ["Flaky Butter", "Sliced Almonds"],
+                image: "https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&q=80&w=500",
+                description: "Flaky French butter pastry double-baked with frangipane almond cream fill."
+            }
+        ];
+
+        let cart = [];
+        let selectedCategory = 'All';
+        let subGrind = 'Whole Bean';
+        let subBags = 2;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu();
+            calculateSubscriptionPrice();
+        });
+
+        function renderMenu() {
+            const container = document.getElementById('coffee-grid');
+            container.innerHTML = '';
+
+            const itemsToDisplay = selectedCategory === 'All' 
+                ? menuData 
+                : menuData.filter(item => item.category === selectedCategory);
+
+            itemsToDisplay.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-3xl p-4 border border-coffee-200/80 dark:border-coffee-800/60 flex flex-col justify-between group hover:border-coffee-500/50 transition duration-300 shadow-sm hover:shadow-xl relative';
+                
+                // Roast Beans Meter Visual
+                let roastMeterHtml = '';
+                if (item.roastLevel > 0) {
+                    roastMeterHtml = `
+                        <div class="flex items-center space-x-1 text-[10px] text-coffee-500 font-mono">
+                            <span>Roast:</span>
+                            <div class="flex space-x-0.5">
+                                ${Array.from({length: 5}).map((_, i) => `<span class="w-1.5 h-3 rounded-full ${i < item.roastLevel ? 'bg-coffee-700 dark:bg-coffee-300' : 'bg-coffee-200 dark:bg-coffee-900'}"></span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                card.innerHTML = `
+                    <div>
+                        <div class="h-48 overflow-hidden rounded-2xl bg-coffee-900 relative">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                            <span class="absolute top-3 left-3 bg-coffee-950/80 backdrop-blur-md text-cream-100 text-[9px] font-mono font-bold px-2 py-0.5 rounded-full">${item.category}</span>
+                        </div>
+
+                        <div class="mt-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-1 text-amber-500 text-xs font-mono font-bold">
+                                    <i class="fa-solid fa-star text-[10px]"></i>
+                                    <span>${item.rating.toFixed(1)}</span>
+                                </div>
+                                ${roastMeterHtml}
+                            </div>
+
+                            <h3 class="font-serif font-bold text-base text-coffee-950 dark:text-cream-100 line-clamp-1">${item.name}</h3>
+                            <p class="text-xs text-coffee-700/80 dark:text-cream-300/80 line-clamp-2 leading-relaxed">${item.description}</p>
+
+                            <!-- Flavor Tags -->
+                            <div class="flex flex-wrap gap-1 pt-1">
+                                ${item.notes.map(n => `<span class="text-[9px] font-mono px-2 py-0.5 rounded-md bg-coffee-100 dark:bg-coffee-900/80 text-coffee-700 dark:text-coffee-300 border border-coffee-200/50 dark:border-coffee-800/50">${n}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-coffee-200/60 dark:border-coffee-800/60 flex items-center justify-between">
+                        <div>
+                            <span class="font-mono font-extrabold text-coffee-950 dark:text-cream-100 text-base">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <div class="flex items-center space-x-1">
+                            <select id="size-select-${item.id}" class="text-[10px] font-mono py-1.5 px-2 rounded-xl bg-coffee-100 dark:bg-coffee-900 border-none text-coffee-800 dark:text-cream-200 font-semibold cursor-pointer">
+                                <option value="Medium">Med 12oz</option>
+                                <option value="Large">Lrg 16oz (+$0.75)</option>
+                            </select>
+                            <button onclick="addToOrderFromGrid(${item.id})" class="px-3 py-1.5 rounded-xl bg-coffee-800 hover:bg-coffee-700 text-cream-100 font-semibold text-xs transition flex items-center space-x-1 shadow-md">
+                                <i class="fa-solid fa-plus text-[10px]"></i>
+                                <span>Add</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function filterMenu(cat, btn) {
+            selectedCategory = cat;
+            document.querySelectorAll('.menu-tab-btn').forEach(b => {
+                b.className = 'menu-tab-btn px-4 py-2 rounded-xl bg-coffee-100 dark:bg-coffee-900/60 text-coffee-800 dark:text-cream-200 text-xs font-semibold hover:bg-coffee-200 transition';
+            });
+            btn.className = 'menu-tab-btn px-4 py-2 rounded-xl bg-coffee-800 text-cream-100 text-xs font-semibold shadow-sm transition';
+            renderMenu();
+        }
+
+        function addToOrderFromGrid(itemId) {
+            const sizeSelect = document.getElementById(`size-select-${itemId}`);
+            const size = sizeSelect ? sizeSelect.value : 'Medium';
+            addToOrder(itemId, size);
+        }
+
+        function addToOrder(itemId, size = 'Medium') {
+            const item = menuData.find(i => i.id === itemId);
+            if (!item) return;
+
+            let finalPrice = item.price;
+            if (size === 'Large') finalPrice += 0.75;
+
+            const existing = cart.find(c => c.id === itemId && c.size === size);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ ...item, size: size, price: finalPrice, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`Added <strong>${item.name} (${size})</strong> to your order bag!`);
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cart-items-container');
+            const cartBadge = document.getElementById('cart-badge');
+            
+            const totalItems = cart.reduce((sum, i) => sum + i.quantity, 0);
+            cartBadge.innerText = totalItems;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="py-16 text-center space-y-3">
+                        <i class="fa-solid fa-mug-hot text-4xl text-coffee-300 dark:text-coffee-800"></i>
+                        <p class="text-xs font-semibold text-coffee-500">Your bag is currently empty.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="py-3 flex items-center justify-between gap-3">
+                        <img src="${item.image}" alt="${item.name}" class="w-12 h-12 object-cover rounded-xl shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <h4 class="text-xs font-bold font-serif text-coffee-950 dark:text-cream-100 truncate">${item.name}</h4>
+                            <div class="text-[10px] font-mono text-coffee-500">${item.size ? item.size : ''} • $${item.price.toFixed(2)}</div>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <button onclick="updateCartQty(${item.id}, '${item.size}', -1)" class="w-5 h-5 rounded bg-coffee-200 dark:bg-coffee-800 text-xs font-bold">-</button>
+                                <span class="text-xs font-mono font-bold">${item.quantity}</span>
+                                <button onclick="updateCartQty(${item.id}, '${item.size}', 1)" class="w-5 h-5 rounded bg-coffee-200 dark:bg-coffee-800 text-xs font-bold">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${item.id}, '${item.size}')" class="text-coffee-400 hover:text-roast-terracotta text-xs"><i class="fa-solid fa-trash"></i></button>
+                    </div>
+                `).join('');
+            }
+
+            calculateCartTotals();
+        }
+
+        function updateCartQty(id, size, delta) {
+            const item = cart.find(i => i.id === id && i.size === size);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => !(i.id === id && i.size === size));
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(id, size) {
+            cart = cart.filter(i => !(i.id === id && i.size === size));
+            updateCartUI();
+        }
+
+        function calculateCartTotals() {
+            const subtotal = cart.reduce((sum, i) => sum + (i.price * i.quantity), 0);
+            const tax = subtotal * 0.08;
+            const total = subtotal + tax;
+
+            document.getElementById('cart-subtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('cart-tax').innerText = `$${tax.toFixed(2)}`;
+            document.getElementById('cart-total').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('cart-btn-total').innerText = total.toFixed(2);
+        }
+
+        function toggleCartDrawer() {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('cart-drawer-overlay');
+            drawer.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // Subscription Configurator Logic
+        function setSubGrind(grind, btn) {
+            subGrind = grind;
+            document.querySelectorAll('.sub-grind-btn').forEach(b => {
+                b.className = 'sub-grind-btn p-2.5 rounded-xl border border-coffee-200 dark:border-coffee-700 bg-coffee-50 dark:bg-coffee-900/40 text-coffee-800 dark:text-cream-200 text-xs font-medium';
+            });
+            btn.className = 'sub-grind-btn p-2.5 rounded-xl border border-coffee-500 bg-coffee-800 text-white font-semibold text-xs';
+        }
+
+        function adjustSubBags(delta) {
+            subBags += delta;
+            if (subBags < 1) subBags = 1;
+            document.getElementById('sub-bags-count').innerText = subBags;
+            calculateSubscriptionPrice();
+        }
+
+        function calculateSubscriptionPrice() {
+            const baseUnitPrice = parseFloat(document.getElementById('sub-bean-select').value);
+            const baseTotal = baseUnitPrice * subBags;
+            const discountPct = 0.15; // 15% discount
+            const discountAmt = baseTotal * discountPct;
+            const finalTotal = baseTotal - discountAmt;
+
+            document.getElementById('sub-base-price').innerText = `$${baseTotal.toFixed(2)}`;
+            document.getElementById('sub-discount').innerText = `-$${discountAmt.toFixed(2)}`;
+            document.getElementById('sub-total-price').innerText = `$${finalTotal.toFixed(2)}`;
+        }
+
+        function addSubscriptionToCart() {
+            const beanSelect = document.getElementById('sub-bean-select');
+            const beanName = beanSelect.options[beanSelect.selectedIndex].text.split('•')[0].trim();
+            const totalPrice = parseFloat(document.getElementById('sub-total-price').innerText.replace('$', ''));
+
+            cart.push({
+                id: 999,
+                name: `Club Sub: ${beanName}`,
+                size: `${subBags} Bags (${subGrind})`,
+                price: totalPrice,
+                quantity: 1,
+                image: "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&q=80&w=300"
+            });
+
+            updateCartUI();
+            toggleCartDrawer();
+            showToast("Added Custom Coffee Subscription to your bag!");
+        }
+
+        // Location Finder Selector
+        function selectLocation(idx, card) {
+            document.querySelectorAll('.location-card').forEach(c => {
+                c.className = 'location-card glass-card p-4 rounded-2xl border border-coffee-200 dark:border-coffee-800 cursor-pointer hover:border-coffee-400 transition';
+            });
+            card.className = 'location-card glass-card p-4 rounded-2xl border-2 border-coffee-500 cursor-pointer transition';
+
+            const mapImg = document.getElementById('location-map-img');
+            const mapLabel = document.getElementById('map-label-name');
+
+            if (idx === 0) {
+                mapImg.src = "https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?auto=format&fit=crop&q=80&w=800";
+                mapLabel.innerText = "Flagship Roastery • Downtown";
+            } else {
+                mapImg.src = "https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800";
+                mapLabel.innerText = "Arts District Brew Bar";
+            }
+        }
+
+        // Figma Specs & Theme Functions
+        let figmaModeActive = false;
+        function toggleFigmaMode() {
+            const drawer = document.getElementById('figma-inspector-drawer');
+            figmaModeActive = !figmaModeActive;
+
+            if (figmaModeActive) {
+                drawer.classList.remove('hidden');
+                drawer.classList.add('flex');
+                document.body.classList.add('figma-inspecting');
+            } else {
+                drawer.classList.add('hidden');
+                drawer.classList.remove('flex');
+                document.body.classList.remove('figma-inspecting');
+            }
+        }
+
+        function toggleWireframeGrid() {
+            document.body.classList.toggle('show-wireframe');
+            const btnText = document.getElementById('wireframe-btn-text');
+            if (document.body.classList.contains('show-wireframe')) {
+                btnText.innerText = "Disable Wireframe Overlay";
+            } else {
+                btnText.innerText = "Toggle Wireframe Overlay";
+            }
+        }
+
+        function copyFigmaTokens() {
+            const tokens = `--coffee-800: #6d3e2d;\n--coffee-500: #bc834d;\n--roast-amber: #d97706;\n--cream-50: #fcfbf7;\n--font-serif: Playfair Display;`;
+            const textArea = document.createElement("textarea");
+            textArea.value = tokens;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast("Design Token CSS variables copied to clipboard!");
+        }
+
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'glass-card bg-coffee-950 text-white border border-coffee-700 px-4 py-3 rounded-2xl shadow-2xl text-xs flex items-center space-x-2 pointer-events-auto transform translate-y-2 opacity-0 transition-all duration-300';
+            toast.innerHTML = `<i class="fa-solid fa-mug-hot text-coffee-400"></i><span>${message}</span>`;
+            
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function proceedToCheckout() {
+            if (cart.length === 0) {
+                showToast("Your order bag is empty!");
+                return;
+            }
+            showToast("Order placed successfully! Preparing your espresso batch...");
+            cart = [];
+            updateCartUI();
+            toggleCartDrawer();
+        }
+    </script>
+</body>
+</html>

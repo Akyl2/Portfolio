@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ink & Quill — Read, Write, Publish</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & VARIABLES
+       ========================================================================== */
+    :root {
+      --bg-dark: #0a0b0e;
+      --bg-surface: #12141a;
+      --bg-surface-elevated: #1a1d26;
+      --bg-glass: rgba(18, 20, 26, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(212, 175, 55, 0.3);
+      
+      --accent-gold: #d4af37;
+      --accent-gold-hover: #f3cf55;
+      --accent-glow: rgba(212, 175, 55, 0.15);
+      
+      --text-main: #e6e8ee;
+      --text-muted: #8c93a4;
+      --text-gold: #e5c158;
+      
+      --font-display: 'Cinzel', serif;
+      --font-body: 'Inter', sans-serif;
+      --font-reader: 'Lora', serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --shadow-gold: 0 0 25px rgba(212, 175, 55, 0.12);
+      
+      --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Light Theme Theme Overrides for Reader */
+    body.reader-light-theme {
+      --bg-dark: #f8f6f0;
+      --bg-surface: #ffffff;
+      --bg-surface-elevated: #efece4;
+      --text-main: #2c2825;
+      --text-muted: #6e675f;
+      --border-color: rgba(0, 0, 0, 0.08);
+    }
+
+    body.reader-sepia-theme {
+      --bg-dark: #f4ebd9;
+      --bg-surface: #ebdcc3;
+      --bg-surface-elevated: #e2d1b5;
+      --text-main: #433422;
+      --text-muted: #7f6a52;
+      --border-color: rgba(67, 52, 34, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* ==========================================================================
+       NAVIGATION & HEADER
+       ========================================================================== */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--bg-glass);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 2rem;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+      cursor: pointer;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-gold), #8a6d1b);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #000;
+      font-weight: 800;
+      box-shadow: var(--shadow-gold);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      background: linear-gradient(180deg, #fff 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-surface);
+      padding: 0.35rem;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+    }
+
+    .nav-tab {
+      padding: 0.5rem 1.25rem;
+      border-radius: 20px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-main);
+    }
+
+    .nav-tab.active {
+      background: var(--accent-gold);
+      color: #0a0b0e;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 0.55rem 1.25rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, var(--accent-gold), #b38f24);
+      color: #0a0b0e;
+    }
+
+    .btn-gold:hover {
+      background: linear-gradient(135deg, var(--accent-gold-hover), var(--accent-gold));
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-gold);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border-color: var(--border-color);
+      color: var(--text-main);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+      background: var(--accent-glow);
+    }
+
+    /* ==========================================================================
+       VIEW MODULES CONTAINER
+       ========================================================================== */
+    .main-container {
+      flex: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .view-panel {
+      display: none;
+      animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .view-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================================================
+       MODULE 1: READ / DISCOVER HUB
+       ========================================================================== */
+    .discover-hero {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: radial-gradient(circle at center, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
+      border-radius: var(--radius-lg);
+      margin-bottom: 2.5rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .discover-hero h1 {
+      font-family: var(--font-display);
+      font-size: 2.75rem;
+      margin-bottom: 1rem;
+      letter-spacing: 1px;
+    }
+
+    .discover-hero p {
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    .search-bar {
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.85rem 1.25rem 0.85rem 3rem;
+      border-radius: 30px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 1.1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .book-card {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .book-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--border-accent);
+      box-shadow: var(--shadow-subtle), var(--shadow-gold);
+    }
+
+    .book-cover {
+      height: 280px;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+    }
+
+    .book-cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10, 11, 14, 0.95) 100%);
+    }
+
+    .book-badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: rgba(10, 11, 14, 0.85);
+      backdrop-filter: blur(8px);
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      border: 1px solid var(--border-accent);
+    }
+
+    .book-info {
+      padding: 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      line-height: 1.3;
+    }
+
+    .book-author {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 0.85rem;
+    }
+
+    .book-meta {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 0.75rem;
+    }
+
+    /* ==========================================================================
+       MODULE 2: READER MODE (Dedicated Reader View)
+       ========================================================================== */
+    .reader-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: var(--bg-dark);
+      overflow-y: auto;
+    }
+
+    .reader-modal.active {
+      display: block;
+    }
+
+    .reader-toolbar {
+      position: sticky;
+      top: 0;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .reader-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .control-group {
+      display: flex;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-sm);
+      padding: 2px;
+      border: 1px solid var(--border-color);
+    }
+
+    .control-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-main);
+      padding: 0.4rem 0.75rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: var(--transition);
+    }
+
+    .control-btn:hover, .control-btn.active {
+      background: var(--accent-gold);
+      color: #000;
+    }
+
+    .reader-content-container {
+      max-width: 720px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .reader-header {
+      text-align: center;
+      margin-bottom: 3.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .reader-book-title {
+      font-family: var(--font-display);
+      font-size: 2.25rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .reader-chapter-title {
+      font-family: var(--font-reader);
+      font-style: italic;
+      color: var(--text-gold);
+      font-size: 1.25rem;
+    }
+
+    .reader-body {
+      font-family: var(--font-reader);
+      font-size: 1.15rem;
+      line-height: 1.85;
+      color: var(--text-main);
+    }
+
+    .reader-body p {
+      margin-bottom: 1.75rem;
+      text-indent: 1.5rem;
+    }
+
+    .reader-body p:first-of-type {
+      text-indent: 0;
+    }
+
+    .reader-body p:first-of-type::first-letter {
+      font-family: var(--font-display);
+      font-size: 3.2rem;
+      float: left;
+      line-height: 0.8;
+      margin-right: 0.75rem;
+      color: var(--accent-gold);
+    }
+
+    /* ==========================================================================
+       MODULE 3: WRITE / STUDIO HUB
+       ========================================================================== */
+    .studio-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1.5rem;
+      height: calc(100vh - 140px);
+    }
+
+    .studio-sidebar {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .chapter-list {
+      list-style: none;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .chapter-item {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      border: 1px solid transparent;
+      transition: var(--transition);
+    }
+
+    .chapter-item:hover {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+    }
+
+    .chapter-item.active {
+      background: var(--accent-glow);
+      color: var(--accent-gold);
+      border-color: var(--border-accent);
+      font-weight: 600;
+    }
+
+    .editor-container {
+      background: var(--bg-surface);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .editor-toolbar {
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      gap: 0.5rem;
+      background: var(--bg-surface-elevated);
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .editor-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 34px;
+      height: 34px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+    }
+
+    .editor-btn:hover {
+      border-color: var(--accent-gold);
+      color: var(--accent-gold);
+    }
+
+    .editor-content-area {
+      flex: 1;
+      padding: 2.5rem;
+      overflow-y: auto;
+      outline: none;
+      font-family: var(--font-reader);
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--text-main);
+    }
+
+    .editor-title-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+      outline: none;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .editor-statusbar {
+      padding: 0.5rem 1.25rem;
+      background: var(--bg-surface-elevated);
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* ==========================================================================
+       MODULE 4: PUBLISH / DASHBOARD
+       ========================================================================== */
+    .publish-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: var(--bg-surface);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      padding: 2.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .published-list {
+      margin-top: 3rem;
+    }
+
+    .published-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      background: var(--bg-surface-elevated);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-color);
+      margin-bottom: 0.85rem;
+    }
+
+    .pub-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .pub-badge {
+      background: rgba(46, 204, 113, 0.15);
+      color: #2ecc71;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 900px) {
+      .studio-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+
+      .studio-sidebar {
+        height: 200px;
+      }
+
+      .header {
+        padding: 0 1rem;
+      }
+
+      .brand-title {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER NAVIGATION -->
+  <header class="header">
+    <div class="brand" onclick="switchView('discover')">
+      <div class="brand-icon">IQ</div>
+      <span class="brand-title">INK &amp; QUILL</span>
+    </div>
+
+    <nav class="nav-tabs">
+      <button class="nav-tab active" id="tab-discover" onclick="switchView('discover')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+        Read
+      </button>
+      <button class="nav-tab" id="tab-studio" onclick="switchView('studio')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+        Write Studio
+      </button>
+      <button class="nav-tab" id="tab-publish" onclick="switchView('publish')">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+        Publish Hub
+      </button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn btn-gold" onclick="switchView('studio')">New Story</button>
+    </div>
+  </header>
+
+  <!-- MAIN MODULE CONTAINER -->
+  <main class="main-container">
+
+    <!-- MODULE 1: DISCOVER / READING HUB -->
+    <section id="view-discover" class="view-panel active">
+      <div class="discover-hero">
+        <h1>Immerse in Extraordinary Worlds</h1>
+        <p>Explore independent literature, groundbreaking web serials, and original manuscripts written by authors worldwide.</p>
+        <div class="search-bar">
+          <svg class="search-icon" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <input type="text" class="search-input" placeholder="Search by title, author, or genre..." onkeyup="filterBooks(this.value)">
+        </div>
+      </div>
+
+      <h2 class="section-title">Trending Publications</h2>
+      <div class="book-grid" id="discover-book-grid">
+        <!-- Dynamic Book Cards Injected Here -->
+      </div>
+    </section>
+
+    <!-- MODULE 2: WRITE / AUTHOR STUDIO -->
+    <section id="view-studio" class="view-panel">
+      <div class="studio-layout">
+        <aside class="studio-sidebar">
+          <div class="sidebar-header">
+            <h3 style="font-size:1rem; font-family: var(--font-display);">Chapters</h3>
+            <button class="btn btn-outline" style="padding: 0.2rem 0.5rem; font-size:0.75rem;" onclick="addChapter()">+ Add</button>
+          </div>
+          <ul class="chapter-list" id="chapter-list">
+            <!-- Dynamic Chapters Injected Here -->
+          </ul>
+        </aside>
+
+        <div class="editor-container">
+          <div class="editor-toolbar">
+            <button class="editor-btn" onclick="execCmd('bold')" title="Bold">B</button>
+            <button class="editor-btn" style="font-style:italic;" onclick="execCmd('italic')" title="Italic">I</button>
+            <button class="editor-btn" style="text-decoration:underline;" onclick="execCmd('underline')" title="Underline">U</button>
+            <span style="width:1px; height:20px; background:var(--border-color); margin: 0 0.25rem;"></span>
+            <button class="editor-btn" onclick="execCmd('justifyLeft')" title="Align Left">←</button>
+            <button class="editor-btn" onclick="execCmd('justifyCenter')" title="Align Center">↔</button>
+            <button class="editor-btn" onclick="execCmd('justifyRight')" title="Align Right">→</button>
+          </div>
+
+          <div style="padding: 2.5rem 2.5rem 0 2.5rem;">
+            <input type="text" class="editor-title-input" id="editor-title" placeholder="Chapter Title..." value="Chapter 1: The Echoes of Dawn" oninput="updateChapterTitle()">
+          </div>
+
+          <div class="editor-content-area" id="editor-body" contenteditable="true" oninput="updateWordCount()">
+            The quiet before twilight fell over the ancient city like a velvet shroud. Kaelen adjusted his cloak, listening intently to the distant hum of the atmospheric engines. Beyond the spires lay the uncharted expanse—a realm waiting for its story to be etched in silver ink.
+          </div>
+
+          <div class="editor-statusbar">
+            <span id="status-word-count">Words: 42</span>
+            <span>Saved to local draft</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MODULE 3: PUBLISH DASHBOARD -->
+    <section id="view-publish" class="view-panel">
+      <div class="publish-container">
+        <h2 class="section-title" style="margin-bottom: 0.5rem;">Publishing Hub</h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">Transform your draft manuscript into a public book visible on the Ink &amp; Quill platform.</p>
+
+        <form id="publish-form" onsubmit="handlePublish(event)">
+          <div class="form-group">
+            <label class="form-label">Book Title</label>
+            <input type="text" class="form-control" id="pub-title" required placeholder="e.g. Chronicles of the Aether">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Author Name</label>
+            <input type="text" class="form-control" id="pub-author" required placeholder="e.g. A.R. Sterling">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Genre / Category</label>
+            <select class="form-control" id="pub-genre">
+              <option value="Sci-Fi / Cyberpunk">Sci-Fi / Cyberpunk</option>
+              <option value="Epic Fantasy">Epic Fantasy</option>
+              <option value="Mystery / Thriller">Mystery / Thriller</option>
+              <option value="Literary Fiction">Literary Fiction</option>
+              <option value="Non-Fiction / Essay">Non-Fiction / Essay</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Synopsis / Description</label>
+            <textarea class="form-control" id="pub-synopsis" required placeholder="Provide an engaging summary for readers..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem;">Publish Manuscript</button>
+        </form>
+
+        <div class="published-list">
+          <h3 style="font-family: var(--font-display); font-size: 1.1rem; margin-bottom: 1rem;">Your Published Catalog</h3>
+          <div id="published-catalog">
+            <!-- Dynamic Catalog Items -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- DEDICATED READER MODAL OVERLAY -->
+  <div class="reader-modal" id="reader-modal">
+    <div class="reader-toolbar">
+      <button class="btn btn-outline" onclick="closeReader()">← Exit Reader</button>
+
+      <div class="reader-controls">
+        <div class="control-group">
+          <button class="control-btn active" onclick="setReaderTheme('dark')">Dark</button>
+          <button class="control-btn" onclick="setReaderTheme('sepia')">Sepia</button>
+          <button class="control-btn" onclick="setReaderTheme('light')">Light</button>
+        </div>
+
+        <div class="control-group">
+          <button class="control-btn" onclick="adjustFontSize(-1)">A-</button>
+          <button class="control-btn" onclick="adjustFontSize(1)">A+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="reader-content-container">
+      <div class="reader-header">
+        <h1 class="reader-book-title" id="reader-book-title">Book Title</h1>
+        <div class="reader-chapter-title" id="reader-chapter-title">Chapter One</div>
+      </div>
+
+      <div class="reader-body" id="reader-body-content">
+        <!-- Active book text injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT APP LOGIC -->
+  <script>
+    // Initial Dataset
+    let books = [
+      {
+        id: 1,
+        title: "The Silent Spires",
+        author: "Evelyn Vance",
+        genre: "Epic Fantasy",
+        reads: "14.2K",
+        rating: "4.9",
+        bg: "linear-gradient(135deg, #1e3c72, #2a5298)",
+        synopsis: "In a world where monuments sing the history of forgotten gods, one apprentice discovers a silent tower holding the secrets of an impending oblivion.",
+        content: `The quiet before twilight fell over the ancient city like a velvet shroud. Kaelen adjusted his cloak, listening intently to the distant hum of the atmospheric engines. Beyond the spires lay the uncharted expanse—a realm waiting for its story to be etched in silver ink.
+
+For centuries, the spires had hummed their harmonic resonance, guiding sailors through the treacherous mist. But today, the central spire remained ominously mute. Kaelen ascended the winding stone staircase, his pulse echoing in his ears like a rhythmic hammer.`
+      },
+      {
+        id: 2,
+        title: "Neon Horizon 2088",
+        author: "Marcus Thorne",
+        genre: "Sci-Fi / Cyberpunk",
+        reads: "28.9K",
+        rating: "4.8",
+        bg: "linear-gradient(135deg, #000000, #434343)",
+        synopsis: "High above the flooded lower districts of Neo-Tokyo, a rogue data analyst uncovers a code pattern that predicts human actions before they occur.",
+        content: `Rain slicked the obsidian glass of the skyway. Rain that tasted of oxidized copper and synthetic cloud-seeding agents. Ren looked down at his cybernetic interface, watching light fragments flicker in his peripheral vision.
+
+"The server isn't responding," Lyra whispered through the encrypted com-link. "If we don't transfer the neural array within three minutes, the security grid will hard-reset."`
+      },
+      {
+        id: 3,
+        title: "The Whispering Tide",
+        author: "Clara Croft",
+        genre: "Mystery / Thriller",
+        reads: "9.5K",
+        rating: "4.7",
+        bg: "linear-gradient(135deg, #134e5e, #71b280)",
+        synopsis: "An isolated lighthouse keeper begins receiving Morse code transmissions from an abandoned freighter adrift in the Arctic Circle.",
+        content: `The lantern room creaked beneath the gale-force winds. Clara adjusted the focus dial on her shortwave receiver. STATIC filled the chamber, followed by three rhythmic clicks.
+
+It was the same pattern as midnight yesterday. The freighter had vanished from radar decades ago, yet its frequency remained sharp, clear, and hauntingly close.`
+      }
+    ];
+
+    let chapters = [
+      { title: "Chapter 1: The Echoes of Dawn", content: "The quiet before twilight fell over the ancient city like a velvet shroud..." },
+      { title: "Chapter 2: Shadows in the Glass", content: "Light refracted through the stained glass windows, casting crimson shards across the marble floor..." }
+    ];
+
+    let activeChapterIndex = 0;
+    let readerFontSize = 1.15;
+
+    // View Navigation Logic
+    function switchView(viewId) {
+      document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
+      document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+
+      document.getElementById(`view-${viewId}`).classList.add('active');
+      document.getElementById(`tab-${viewId}`).classList.add('active');
+    }
+
+    // Render Discover Section
+    function renderDiscover(filterText = "") {
+      const grid = document.getElementById('discover-book-grid');
+      grid.innerHTML = "";
+
+      const filtered = books.filter(b => 
+        b.title.toLowerCase().includes(filterText.toLowerCase()) || 
+        b.author.toLowerCase().includes(filterText.toLowerCase()) ||
+        b.genre.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      filtered.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        card.onclick = () => openReader(book.id);
+        card.innerHTML = `
+          <div class="book-cover" style="background: ${book.bg}">
+            <div class="book-cover-overlay"></div>
+            <span class="book-badge">${book.genre}</span>
+          </div>
+          <div class="book-info">
+            <div class="book-title">${book.title}</div>
+            <div class="book-author">by ${book.author}</div>
+            <div class="book-meta">
+              <span>★ ${book.rating}</span>
+              <span>${book.reads} Reads</span>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterBooks(query) {
+      renderDiscover(query);
+    }
+
+    // Reader Mode Logic
+    function openReader(bookId) {
+      const book = books.find(b => b.id === bookId);
+      if (!book) return;
+
+      document.getElementById('reader-book-title').innerText = book.title;
+      document.getElementById('reader-chapter-title').innerText = `by ${book.author}`;
+      
+      const paragraphs = book.content.split('\n\n').map(p => `<p>${p}</p>`).join('');
+      document.getElementById('reader-body-content').innerHTML = paragraphs;
+
+      document.getElementById('reader-modal').classList.add('active');
+    }
+
+    function closeReader() {
+      document.getElementById('reader-modal').classList.remove('active');
+    }
+
+    function setReaderTheme(theme) {
+      document.body.classList.remove('reader-light-theme', 'reader-sepia-theme');
+      document.querySelectorAll('.control-group button').forEach(b => b.classList.remove('active'));
+      
+      if (theme === 'light') {
+        document.body.classList.add('reader-light-theme');
+      } else if (theme === 'sepia') {
+        document.body.classList.add('reader-sepia-theme');
+      }
+      event.target.classList.add('active');
+    }
+
+    function adjustFontSize(delta) {
+      readerFontSize += delta * 0.1;
+      readerFontSize = Math.max(0.9, Math.min(readerFontSize, 1.6));
+      document.getElementById('reader-body-content').style.fontSize = `${readerFontSize}rem`;
+    }
+
+    // Writer Studio Logic
+    function renderChapters() {
+      const list = document.getElementById('chapter-list');
+      list.innerHTML = "";
+
+      chapters.forEach((ch, idx) => {
+        const li = document.createElement('li');
+        li.className = `chapter-item ${idx === activeChapterIndex ? 'active' : ''}`;
+        li.onclick = () => selectChapter(idx);
+        li.innerHTML = `<span>${ch.title}</span>`;
+        list.appendChild(li);
+      });
+    }
+
+    function selectChapter(index) {
+      activeChapterIndex = index;
+      document.getElementById('editor-title').value = chapters[index].title;
+      document.getElementById('editor-body').innerText = chapters[index].content;
+      renderChapters();
+      updateWordCount();
+    }
+
+    function addChapter() {
+      const newNum = chapters.length + 1;
+      chapters.push({
+        title: `Chapter ${newNum}: Untitled`,
+        content: "Start writing your story here..."
+      });
+      selectChapter(chapters.length - 1);
+    }
+
+    function updateChapterTitle() {
+      const val = document.getElementById('editor-title').value;
+      chapters[activeChapterIndex].title = val;
+      renderChapters();
+    }
+
+    function updateWordCount() {
+      const text = document.getElementById('editor-body').innerText || "";
+      const words = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+      document.getElementById('status-word-count').innerText = `Words: ${words}`;
+      chapters[activeChapterIndex].content = text;
+    }
+
+    function execCmd(command) {
+      document.execCommand(command, false, null);
+    }
+
+    // Publish Logic
+    function handlePublish(e) {
+      e.preventDefault();
+      const title = document.getElementById('pub-title').value;
+      const author = document.getElementById('pub-author').value;
+      const genre = document.getElementById('pub-genre').value;
+      const synopsis = document.getElementById('pub-synopsis').value;
+
+      const newBook = {
+        id: Date.now(),
+        title: title,
+        author: author,
+        genre: genre,
+        reads: "1",
+        rating: "5.0",
+        bg: "linear-gradient(135deg, #2b5876, #4e4376)",
+        synopsis: synopsis,
+        content: chapters[0].content
+      };
+
+      books.unshift(newBook);
+      renderDiscover();
+      renderPublishedCatalog();
+
+      alert(`"${title}" has been successfully published to Ink & Quill!`);
+      document.getElementById('publish-form').reset();
+      switchView('discover');
+    }
+
+    function renderPublishedCatalog() {
+      const container = document.getElementById('published-catalog');
+      container.innerHTML = "";
+
+      books.slice(0, 3).forEach(b => {
+        const item = document.createElement('div');
+        item.className = 'published-item';
+        item.innerHTML = `
+          <div>
+            <strong>${b.title}</strong>
+            <div style="font-size:0.8rem; color:var(--text-muted);">${b.genre} • ${b.reads} reads</div>
+          </div>
+          <span class="pub-badge">Live</span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Initialize App
+    window.addEventListener('DOMContentLoaded', () => {
+      renderDiscover();
+      renderChapters();
+      renderPublishedCatalog();
+      updateWordCount();
+    });
+  </script>
+</body>
+</html>

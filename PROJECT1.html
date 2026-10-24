@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figma / UI/UX Design Showcase Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                    colors: {
+                        figma: {
+                            bg: '#1e1e1e',
+                            panel: '#2c2c2c',
+                            border: '#383838',
+                            accent: '#0cf1a9',
+                            blue: '#0d99ff',
+                            purple: '#9747ff',
+                            pink: '#ff24bd',
+                            orange: '#ff7262'
+                        }
+                    },
+                    boxShadow: {
+                        'glow-blue': '0 0 20px rgba(13, 153, 255, 0.35)',
+                        'glow-purple': '0 0 20px rgba(151, 71, 255, 0.35)',
+                        'glow-green': '0 0 20px rgba(12, 241, 169, 0.35)',
+                        'figma-card': '0 10px 30px -5px rgba(0, 0, 0, 0.3)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar for clean design tool look */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #383838;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4a4a4a;
+        }
+        
+        .canvas-grid {
+            background-size: 24px 24px;
+            background-image: radial-gradient(circle, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+        }
+
+        .device-frame {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-panel {
+            background: rgba(30, 30, 30, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Smooth transitions for interactive state elements */
+        .tab-btn {
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Pulse animation for active node indicator */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.4; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .pulse-node {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-figma-bg text-gray-100 font-sans h-full overflow-hidden antialiased select-none flex flex-col">
+
+    <header class="h-14 bg-figma-panel border-b border-figma-border px-4 flex items-center justify-between z-30 shrink-0">
+        <!-- Left Tools & Title -->
+        <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 text-white font-bold tracking-wider text-sm bg-black/30 px-2.5 py-1.5 rounded-md border border-white/10">
+                <span class="text-figma-blue"><i class="fa-brands fa-figma text-lg"></i></span>
+                <span>UI/UX HUB</span>
+                <span class="text-[10px] bg-figma-purple/30 text-figma-purple px-1.5 py-0.5 rounded font-mono">v2.5</span>
+            </div>
+
+            <!-- Figma Canvas Controls -->
+            <div class="hidden md:flex items-center space-x-1 bg-black/20 p-1 rounded-lg border border-white/5 text-xs text-gray-400">
+                <button title="Select Tool" class="p-1.5 rounded hover:bg-white/10 text-figma-blue bg-white/10"><i class="fa-solid fa-mouse-pointer"></i></button>
+                <button title="Frame Tool" class="p-1.5 rounded hover:bg-white/10"><i class="fa-solid fa-border-all"></i></button>
+                <button title="Shape Tool" class="p-1.5 rounded hover:bg-white/10"><i class="fa-solid fa-square"></i></button>
+                <button title="Text Tool" class="p-1.5 rounded hover:bg-white/10"><i class="fa-solid fa-[#]">T</i></button>
+                <button title="Comment" class="p-1.5 rounded hover:bg-white/10"><i class="fa-regular fa-comment"></i></button>
+            </div>
+        </div>
+
+        <!-- Center Site Concept Switcher Tabs -->
+        <nav class="flex items-center space-x-1 bg-black/40 p-1 rounded-xl border border-white/10 overflow-x-auto max-w-2xl">
+            <button onclick="switchTemplate('saas')" id="tab-saas" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-2 whitespace-nowrap bg-figma-blue text-white shadow-lg shadow-figma-blue/20">
+                <i class="fa-solid fa-rocket text-xs"></i>
+                <span>1. SaaS Platform</span>
+            </button>
+            <button onclick="switchTemplate('ecommerce')" id="tab-ecommerce" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white hover:bg-white/5">
+                <i class="fa-solid fa-bag-shopping text-xs"></i>
+                <span>2. E-Commerce</span>
+            </button>
+            <button onclick="switchTemplate('portfolio')" id="tab-portfolio" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white hover:bg-white/5">
+                <i class="fa-solid fa-palette text-xs"></i>
+                <span>3. Portfolio</span>
+            </button>
+            <button onclick="switchTemplate('blog')" id="tab-blog" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white hover:bg-white/5">
+                <i class="fa-solid fa-newspaper text-xs"></i>
+                <span>4. Tech Magazine</span>
+            </button>
+            <button onclick="switchTemplate('mobile')" id="tab-mobile" class="tab-btn px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-2 whitespace-nowrap text-gray-400 hover:text-white hover:bg-white/5">
+                <i class="fa-solid fa-mobile-screen text-xs"></i>
+                <span>5. App Showcase</span>
+            </button>
+        </nav>
+
+        <!-- Right Controls & Actions -->
+        <div class="flex items-center space-x-3">
+            <!-- View Mode Switcher -->
+            <div class="flex items-center bg-black/30 p-1 rounded-lg border border-white/10 text-xs">
+                <button id="view-desktop" onclick="setDeviceView('desktop')" class="px-2 py-1 rounded bg-white/10 text-white font-medium flex items-center space-x-1" title="Desktop Frame View">
+                    <i class="fa-solid fa-desktop"></i>
+                    <span class="hidden xl:inline">Desktop</span>
+                </button>
+                <button id="view-mobile" onclick="setDeviceView('mobile')" class="px-2 py-1 rounded text-gray-400 hover:text-white flex items-center space-x-1" title="Mobile Frame View">
+                    <i class="fa-solid fa-mobile-button"></i>
+                    <span class="hidden xl:inline">Mobile</span>
+                </button>
+            </div>
+
+            <button onclick="toggleInspector()" class="px-3 py-1.5 bg-figma-purple hover:bg-figma-purple/80 text-white font-medium text-xs rounded-lg flex items-center space-x-1.5 shadow-md shadow-figma-purple/30 transition">
+                <i class="fa-solid fa-sliders"></i>
+                <span class="hidden sm:inline">Design Tokens</span>
+            </button>
+
+            <button onclick="triggerShareModal()" class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg">
+                <i class="fa-solid fa-share-nodes"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="flex-1 flex overflow-hidden relative">
+
+        <!-- Left Layers / Components Panel (Collapsible) -->
+        <aside id="left-panel" class="w-64 bg-figma-panel border-r border-figma-border flex flex-col shrink-0 hidden lg:flex">
+            <!-- Panel Header -->
+            <div class="p-3 border-b border-figma-border flex items-center justify-between text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <span>Design System Layers</span>
+                <i class="fa-solid fa-layer-group text-figma-blue"></i>
+            </div>
+            
+            <!-- Pages Tree -->
+            <div class="p-2 border-b border-figma-border text-xs">
+                <div class="text-gray-500 font-mono mb-2 px-2 text-[10px] uppercase">Frames / Pages</div>
+                <div class="space-y-1">
+                    <div id="tree-saas" onclick="switchTemplate('saas')" class="px-2.5 py-1.5 rounded flex items-center space-x-2 cursor-pointer bg-figma-blue/20 text-figma-blue border border-figma-blue/30 font-medium">
+                        <i class="fa-solid fa-frame-check"></i>
+                        <span>SaaS - Core Landing</span>
+                    </div>
+                    <div id="tree-ecommerce" onclick="switchTemplate('ecommerce')" class="px-2.5 py-1.5 rounded flex items-center space-x-2 cursor-pointer text-gray-400 hover:bg-white/5">
+                        <i class="fa-solid fa-frame-check"></i>
+                        <span>E-Com - Product Detail</span>
+                    </div>
+                    <div id="tree-portfolio" onclick="switchTemplate('portfolio')" class="px-2.5 py-1.5 rounded flex items-center space-x-2 cursor-pointer text-gray-400 hover:bg-white/5">
+                        <i class="fa-solid fa-frame-check"></i>
+                        <span>Portfolio - Dark Minimal</span>
+                    </div>
+                    <div id="tree-blog" onclick="switchTemplate('blog')" class="px-2.5 py-1.5 rounded flex items-center space-x-2 cursor-pointer text-gray-400 hover:bg-white/5">
+                        <i class="fa-solid fa-frame-check"></i>
+                        <span>Blog - Editorial Grid</span>
+                    </div>
+                    <div id="tree-mobile" onclick="switchTemplate('mobile')" class="px-2.5 py-1.5 rounded flex items-center space-x-2 cursor-pointer text-gray-400 hover:bg-white/5">
+                        <i class="fa-solid fa-frame-check"></i>
+                        <span>Mobile - App Promo</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Template Components breakdown -->
+            <div class="flex-1 overflow-y-auto p-2 text-xs">
+                <div class="text-gray-500 font-mono mb-2 px-2 text-[10px] uppercase">Inspected Components</div>
+                <div id="layer-components" class="space-y-1 text-gray-400">
+                    <!-- Dynamic Layer Tree populated via JS -->
+                </div>
+            </div>
+
+            <!-- Quick Specs Footer -->
+            <div class="p-3 border-t border-figma-border bg-black/20 text-[11px] text-gray-400 space-y-1">
+                <div class="flex justify-between"><span>Frame Size:</span> <span id="frame-dimensions" class="text-white font-mono">1440 x 900</span></div>
+                <div class="flex justify-between"><span>Status:</span> <span class="text-emerald-400 flex items-center gap-1"><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full inline-block"></span> Active Pixel-Perfect</span></div>
+            </div>
+        </aside>
+
+        <main class="flex-1 canvas-grid overflow-auto p-4 md:p-8 flex items-center justify-center relative bg-figma-bg" id="canvas-container">
+            
+            <!-- Canvas Floating Controls Overlay -->
+            <div class="absolute top-4 left-4 z-20 glass-panel px-3 py-1.5 rounded-full text-xs text-gray-300 flex items-center space-x-3 shadow-lg">
+                <span class="flex items-center space-x-1.5">
+                    <span class="w-2 h-2 rounded-full bg-figma-accent pulse-node"></span>
+                    <span id="current-template-label" class="font-semibold text-white">SaaS Landing Page</span>
+                </span>
+                <span class="text-gray-600">|</span>
+                <span class="font-mono text-gray-400" id="zoom-level">100%</span>
+            </div>
+
+            <!-- Responsive Device Frame Wrapper -->
+            <div id="device-wrapper" class="device-frame w-full max-w-6xl h-[800px] bg-slate-950 rounded-2xl border-4 border-figma-border shadow-2xl overflow-hidden relative flex flex-col transition-all duration-500">
+                
+                <!-- Simulated Web Browser Top Bar -->
+                <div class="h-9 bg-slate-900 border-b border-slate-800 px-4 flex items-center justify-between shrink-0 select-none">
+                    <div class="flex items-center space-x-2">
+                        <span class="w-3 h-3 rounded-full bg-rose-500 inline-block cursor-pointer" title="Close"></span>
+                        <span class="w-3 h-3 rounded-full bg-amber-500 inline-block cursor-pointer" title="Minimize"></span>
+                        <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block cursor-pointer" title="Expand"></span>
+                    </div>
+                    
+                    <!-- URL Address Bar -->
+                    <div class="flex-1 max-w-xl mx-4 bg-slate-950 border border-slate-800 rounded-md px-3 py-0.5 text-xs text-gray-400 flex items-center justify-between">
+                        <span class="flex items-center space-x-2 truncate">
+                            <i class="fa-solid fa-lock text-[10px] text-emerald-400"></i>
+                            <span id="simulated-url" class="font-mono text-gray-300">https://designhub.ui/saas-flow</span>
+                        </span>
+                        <button onclick="refreshCurrentFrame()" title="Reload Frame" class="hover:text-white transition"><i class="fa-solid fa-rotate-right text-[10px]"></i></button>
+                    </div>
+
+                    <div class="flex items-center space-x-2 text-gray-400 text-xs">
+                        <i class="fa-solid fa-shield-halved text-emerald-400"></i>
+                        <span class="hidden sm:inline font-mono text-[10px]">SSL Encrypted</span>
+                    </div>
+                </div>
+
+                <div id="viewport-content" class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-950 text-slate-100 scroll-smooth">
+                    
+                    <!-- ========================================================================= -->
+                    <!-- MINI-WEBSITE 1: SaaS LANDING PAGE -->
+                    <!-- ========================================================================= -->
+                    <section id="site-saas" class="min-h-full flex flex-col">
+                        <!-- SaaS Header -->
+                        <header class="sticky top-0 z-20 bg-slate-950/80 backdrop-blur-md border-b border-slate-800 px-6 py-4 flex justify-between items-center">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg">
+                                    N
+                                </div>
+                                <span class="font-extrabold text-xl tracking-tight text-white">NexusAI</span>
+                            </div>
+                            <nav class="hidden md:flex space-x-8 text-sm text-slate-300">
+                                <a href="#saas-features" class="hover:text-cyan-400 transition">Features</a>
+                                <a href="#saas-solutions" class="hover:text-cyan-400 transition">Solutions</a>
+                                <a href="#saas-pricing" class="hover:text-cyan-400 transition">Pricing</a>
+                                <a href="#saas-docs" class="hover:text-cyan-400 transition">Docs</a>
+                            </nav>
+                            <div class="flex items-center space-x-3">
+                                <button class="text-xs text-slate-300 hover:text-white font-medium px-3 py-2">Sign In</button>
+                                <button class="text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-4 py-2 rounded-lg shadow-lg shadow-cyan-500/20 transition">Start Free Trial</button>
+                            </div>
+                        </header>
+
+                        <!-- SaaS Hero Section -->
+                        <div class="px-6 py-16 md:py-24 max-w-5xl mx-auto text-center relative">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-medium mb-6">
+                                <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+                                Nexus 3.0 Automation Engine Live
+                            </div>
+                            <h1 class="text-4xl md:text-6xl font-extrabold text-white tracking-tight leading-tight mb-6">
+                                Automate Workflow Ops with <span class="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">Neural Intelligence</span>
+                            </h1>
+                            <p class="text-slate-400 text-base md:text-lg max-w-2xl mx-auto mb-8">
+                                Connect design tokens, developer APIs, and business data into one real-time cloud orchestrator.
+                            </p>
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                <button onclick="triggerSaasDemo()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-semibold rounded-xl shadow-lg shadow-cyan-500/25 transition">
+                                    <i class="fa-solid fa-bolt mr-2"></i> Launch Workspace
+                                </button>
+                                <button class="w-full sm:w-auto px-6 py-3 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 font-semibold rounded-xl transition">
+                                    <i class="fa-solid fa-play mr-2 text-cyan-400"></i> Watch 2-Min Demo
+                                </button>
+                            </div>
+
+                            <!-- Interactive Dashboard Mockup Preview -->
+                            <div class="mt-12 rounded-2xl bg-slate-900 border border-slate-800 p-4 shadow-2xl relative group">
+                                <div class="flex items-center justify-between pb-3 border-b border-slate-800 mb-4 text-xs text-slate-400">
+                                    <div class="flex space-x-2">
+                                        <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+                                        <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+                                        <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+                                    </div>
+                                    <span class="font-mono">nexus-orchestrator-v3.0.4</span>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-left">
+                                    <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                                        <div class="text-xs text-slate-400 mb-1">API Latency</div>
+                                        <div class="text-2xl font-bold text-emerald-400 font-mono">14.2ms</div>
+                                        <div class="text-[10px] text-slate-500 mt-2">↓ 32% from last release</div>
+                                    </div>
+                                    <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                                        <div class="text-xs text-slate-400 mb-1">Active Pipeline Tasks</div>
+                                        <div class="text-2xl font-bold text-cyan-400 font-mono" id="saas-counter">18,942</div>
+                                        <div class="text-[10px] text-slate-500 mt-2">Real-time load balancing</div>
+                                    </div>
+                                    <div class="p-4 bg-slate-950 rounded-xl border border-slate-800">
+                                        <div class="text-xs text-slate-400 mb-1">Error Budget Rate</div>
+                                        <div class="text-2xl font-bold text-purple-400 font-mono">99.998%</div>
+                                        <div class="text-[10px] text-slate-500 mt-2">Zero unhandled exceptions</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Feature Grid -->
+                        <div id="saas-features" class="bg-slate-900/50 py-12 px-6 border-t border-slate-800">
+                            <div class="max-w-5xl mx-auto">
+                                <h3 class="text-center text-xs font-semibold text-cyan-400 uppercase tracking-widest mb-8">Architected for Speed</h3>
+                                <div class="grid md:grid-cols-3 gap-6">
+                                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-cyan-500/40 transition">
+                                        <div class="w-10 h-10 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center text-lg mb-4">
+                                            <i class="fa-solid fa-network-wired"></i>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-white mb-2">Automated Mesh</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">Instantly sync assets across Figma libraries and production frontend frameworks.</p>
+                                    </div>
+                                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-blue-500/40 transition">
+                                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center text-lg mb-4">
+                                            <i class="fa-solid fa-microchip"></i>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-white mb-2">Neural Parsing</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">Turn high-fidelity prototypes into reactive Web Components with zero code bloat.</p>
+                                    </div>
+                                    <div class="p-6 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/40 transition">
+                                        <div class="w-10 h-10 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-lg mb-4">
+                                            <i class="fa-solid fa-shield-halved"></i>
+                                        </div>
+                                        <h4 class="text-lg font-bold text-white mb-2">Enterprise Encryption</h4>
+                                        <p class="text-xs text-slate-400 leading-relaxed">SOC2 Type II compliant pipelines ensure design token secrecy across teams.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================================= -->
+                    <!-- MINI-WEBSITE 2: E-COMMERCE PRODUCT PAGE -->
+                    <!-- ========================================================================= -->
+                    <section id="site-ecommerce" class="min-h-full bg-zinc-950 hidden text-zinc-100 flex flex-col">
+                        <!-- E-Com Nav -->
+                        <header class="border-b border-zinc-800 px-6 py-4 flex justify-between items-center bg-zinc-900/50">
+                            <span class="font-black tracking-widest text-xl text-white uppercase flex items-center gap-2">
+                                <span class="w-3 h-3 bg-amber-500 rounded-full"></span> AURA SOUND
+                            </span>
+                            <nav class="hidden md:flex space-x-6 text-xs text-zinc-400 uppercase tracking-wider font-semibold">
+                                <a href="#" class="text-white">Headphones</a>
+                                <a href="#" class="hover:text-white">Earbuds</a>
+                                <a href="#" class="hover:text-white">Acoustics</a>
+                                <a href="#" class="hover:text-white">Support</a>
+                            </nav>
+                            <div class="flex items-center space-x-4">
+                                <button class="relative text-zinc-300 hover:text-white">
+                                    <i class="fa-solid fa-cart-shopping text-lg"></i>
+                                    <span id="cart-badge" class="absolute -top-2 -right-2 bg-amber-500 text-black font-bold text-[10px] w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                                </button>
+                            </div>
+                        </header>
+
+                        <!-- E-Com Main Product Showcase -->
+                        <div class="flex-1 max-w-6xl mx-auto p-6 md:p-12 grid md:grid-cols-2 gap-12 items-center">
+                            <!-- Left Product Gallery Mockup -->
+                            <div class="relative group">
+                                <div class="aspect-square bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-3xl border border-zinc-800 flex items-center justify-center p-8 relative overflow-hidden shadow-2xl">
+                                    <div class="absolute inset-0 bg-amber-500/5 rounded-3xl blur-2xl"></div>
+                                    <!-- Dynamic Animated Headphone Graphic -->
+                                    <div class="relative text-center">
+                                        <i class="fa-solid fa-headphones text-9xl text-amber-500 drop-shadow-[0_20px_50px_rgba(245,158,11,0.3)] transition transform group-hover:scale-105 duration-500"></i>
+                                        <span class="block mt-6 text-xs font-mono text-zinc-500 uppercase tracking-widest">Aura Spatial Pro - Midnight Edition</span>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-3 mt-4">
+                                    <div class="aspect-square bg-zinc-900 rounded-xl border border-amber-500 flex items-center justify-center cursor-pointer"><i class="fa-solid fa-headphones text-amber-500"></i></div>
+                                    <div class="aspect-square bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center text-zinc-600 hover:border-zinc-700 cursor-pointer"><i class="fa-solid fa-sliders text-sm"></i></div>
+                                    <div class="aspect-square bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center text-zinc-600 hover:border-zinc-700 cursor-pointer"><i class="fa-solid fa-battery-full text-sm"></i></div>
+                                    <div class="aspect-square bg-zinc-900 rounded-xl border border-zinc-800 flex items-center justify-center text-zinc-600 hover:border-zinc-700 cursor-pointer"><i class="fa-solid fa-box text-sm"></i></div>
+                                </div>
+                            </div>
+
+                            <!-- Right Product Details -->
+                            <div class="space-y-6">
+                                <div class="inline-block px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 text-xs font-bold uppercase tracking-widest">
+                                    Flagship ANC Series
+                                </div>
+                                <h1 class="text-3xl md:text-5xl font-extrabold text-white tracking-tight">Aura Spatial Studio ANC</h1>
+                                <div class="flex items-center space-x-4">
+                                    <span class="text-3xl font-extrabold text-amber-400 font-mono">$349.00</span>
+                                    <span class="text-sm text-zinc-500 line-through font-mono">$429.00</span>
+                                    <span class="text-xs bg-emerald-500/20 text-emerald-400 font-bold px-2 py-1 rounded">Save $80</span>
+                                </div>
+                                <p class="text-zinc-400 text-sm leading-relaxed">
+                                    Engineered with custom 45mm planar magnetic drivers, lossless LDAC streaming, and 60-hour continuous acoustic isolation.
+                                </p>
+
+                                <!-- Color Selector -->
+                                <div>
+                                    <label class="text-xs font-semibold uppercase text-zinc-400 tracking-wider block mb-2">Color Variant</label>
+                                    <div class="flex space-x-3">
+                                        <button class="w-8 h-8 rounded-full bg-amber-500 ring-2 ring-offset-2 ring-amber-500 ring-offset-zinc-950"></button>
+                                        <button class="w-8 h-8 rounded-full bg-slate-800 hover:scale-105 transition"></button>
+                                        <button class="w-8 h-8 rounded-full bg-slate-200 hover:scale-105 transition"></button>
+                                    </div>
+                                </div>
+
+                                <!-- Add to Cart Actions -->
+                                <div class="pt-4 flex items-center space-x-4">
+                                    <button onclick="addToCart()" class="flex-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-4 px-6 rounded-2xl flex items-center justify-center space-x-3 shadow-lg shadow-amber-500/20 transition active:scale-95">
+                                        <i class="fa-solid fa-bag-shopping"></i>
+                                        <span>Add To Cart</span>
+                                    </button>
+                                    <button class="p-4 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-2xl text-zinc-300">
+                                        <i class="fa-regular fa-heart text-xl"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Shipping highlights -->
+                                <div class="border-t border-zinc-800 pt-6 grid grid-cols-2 gap-4 text-xs text-zinc-400">
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-truck-fast text-amber-500 text-base"></i>
+                                        <span>Free Worldwide Express</span>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <i class="fa-solid fa-rotate-left text-amber-500 text-base"></i>
+                                        <span>30-Day Acoustic Trial</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================================= -->
+                    <!-- MINI-WEBSITE 3: CREATIVE PORTFOLIO -->
+                    <!-- ========================================================================= -->
+                    <section id="site-portfolio" class="min-h-full bg-neutral-950 hidden text-neutral-100 flex flex-col p-6 md:p-12">
+                        <!-- Portfolio Top Navigation -->
+                        <header class="flex justify-between items-center mb-16">
+                            <span class="font-mono text-sm tracking-widest text-neutral-400 uppercase">Evelyn Vance / Design Director</span>
+                            <div class="flex items-center space-x-6 text-xs uppercase tracking-wider font-semibold">
+                                <a href="#work" class="text-neutral-100 border-b-2 border-figma-accent pb-1">Selected Work</a>
+                                <a href="#about" class="text-neutral-500 hover:text-neutral-200 transition">About</a>
+                                <a href="#contact" class="text-neutral-500 hover:text-neutral-200 transition">Contact</a>
+                            </div>
+                        </header>
+
+                        <!-- Portfolio Hero Statement -->
+                        <div class="max-w-4xl mb-16">
+                            <h1 class="text-3xl md:text-5xl font-light tracking-tight leading-snug mb-6">
+                                Crafting <span class="font-serif italic text-figma-accent">tactile digital experiences</span> and spatial interfaces for forward-thinking brands.
+                            </h1>
+                            <p class="text-neutral-400 font-mono text-xs tracking-wider">Tokyo / San Francisco — Available for Q4 Commissions</p>
+                        </div>
+
+                        <!-- Portfolio Case Studies Grid -->
+                        <div class="grid md:grid-cols-2 gap-8 mb-12">
+                            <!-- Project Card 1 -->
+                            <div class="group cursor-pointer">
+                                <div class="aspect-[16/10] bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-800 relative mb-4 p-6 flex flex-col justify-between group-hover:border-figma-accent/50 transition duration-300">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs font-mono text-neutral-500">01 / FinTech</span>
+                                        <span class="text-xs font-mono bg-neutral-800 px-2 py-1 rounded text-neutral-300">2026</span>
+                                    </div>
+                                    <div class="my-auto text-center">
+                                        <i class="fa-solid fa-coins text-6xl text-neutral-700 group-hover:text-figma-accent transition duration-500"></i>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <h3 class="text-xl font-bold text-white group-hover:text-figma-accent transition">Chronos Crypto Wallet</h3>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-neutral-500 group-hover:text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Project Card 2 -->
+                            <div class="group cursor-pointer">
+                                <div class="aspect-[16/10] bg-neutral-900 rounded-2xl overflow-hidden border border-neutral-800 relative mb-4 p-6 flex flex-col justify-between group-hover:border-figma-purple/50 transition duration-300">
+                                    <div class="flex justify-between items-start">
+                                        <span class="text-xs font-mono text-neutral-500">02 / Spatial UI</span>
+                                        <span class="text-xs font-mono bg-neutral-800 px-2 py-1 rounded text-neutral-300">2025</span>
+                                    </div>
+                                    <div class="my-auto text-center">
+                                        <i class="fa-solid fa-vr-cardboard text-6xl text-neutral-700 group-hover:text-figma-purple transition duration-500"></i>
+                                    </div>
+                                    <div class="flex justify-between items-end">
+                                        <h3 class="text-xl font-bold text-white group-hover:text-figma-purple transition">Aether Spatial OS</h3>
+                                        <i class="fa-solid fa-arrow-up-right-from-square text-neutral-500 group-hover:text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================================= -->
+                    <!-- MINI-WEBSITE 4: TECH BLOG / MAGAZINE -->
+                    <!-- ========================================================================= -->
+                    <section id="site-blog" class="min-h-full bg-slate-900 hidden text-slate-100 flex flex-col">
+                        <!-- Blog Header -->
+                        <header class="border-b border-slate-800 px-6 py-5 flex justify-between items-center bg-slate-950">
+                            <div class="flex items-center space-x-3">
+                                <span class="font-mono font-black text-xl tracking-tighter text-indigo-400">[HYPER_BYTE]</span>
+                                <span class="text-xs text-slate-500 border-l border-slate-800 pl-3 hidden sm:inline">Journal of Design Engineering</span>
+                            </div>
+                            <div class="flex items-center space-x-4 text-xs font-mono">
+                                <span class="text-slate-400">Issue #104</span>
+                                <button class="bg-indigo-600 hover:bg-indigo-500 text-white px-3 py-1.5 rounded font-sans font-semibold">Subscribe</button>
+                            </div>
+                        </header>
+
+                        <!-- Magazine Featured Story Section -->
+                        <div class="p-6 md:p-10 max-w-6xl mx-auto w-full">
+                            <div class="grid md:grid-cols-3 gap-8">
+                                <!-- Main Editorial Story -->
+                                <article class="md:col-span-2 bg-slate-950 p-6 md:p-8 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                                    <div>
+                                        <div class="flex items-center space-x-2 text-xs font-mono text-indigo-400 mb-4">
+                                            <span>DEEP DIVE</span>
+                                            <span>•</span>
+                                            <span>7 MIN READ</span>
+                                        </div>
+                                        <h2 class="text-2xl md:text-4xl font-black text-white tracking-tight mb-4 hover:text-indigo-300 transition cursor-pointer">
+                                            The Death of Skewmorphism and the Dawn of Generative Fluid UI
+                                        </h2>
+                                        <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                                            How neural render loops and real-time GPU shaders are replacing static design system components across web applications.
+                                        </p>
+                                    </div>
+                                    <div class="flex items-center justify-between border-t border-slate-800 pt-4 text-xs text-slate-400">
+                                        <span class="font-medium text-slate-300">By Dr. Aris Thorne</span>
+                                        <span class="font-mono">Oct 24, 2026</span>
+                                    </div>
+                                </article>
+
+                                <!-- Trending Headlines Sidebar -->
+                                <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                                    <div>
+                                        <h3 class="text-xs font-mono text-slate-400 uppercase tracking-widest border-b border-slate-800 pb-3 mb-4">Trending Wire</h3>
+                                        <div class="space-y-4">
+                                            <div class="group cursor-pointer">
+                                                <span class="text-[10px] text-indigo-400 font-mono">SYSTEMS</span>
+                                                <h4 class="text-xs font-bold text-white group-hover:text-indigo-400 transition">Figma 4.0 Plugin Architecture Breakdown</h4>
+                                            </div>
+                                            <div class="group cursor-pointer">
+                                                <span class="text-[10px] text-emerald-400 font-mono">ACCESSIBILITY</span>
+                                                <h4 class="text-xs font-bold text-white group-hover:text-emerald-400 transition">WCAG 3.0 Contrast Algorithm Updates</h4>
+                                            </div>
+                                            <div class="group cursor-pointer">
+                                                <span class="text-[10px] text-amber-400 font-mono">OPINION</span>
+                                                <h4 class="text-xs font-bold text-white group-hover:text-amber-400 transition">Why Design Tokens Need WebAssembly</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ========================================================================= -->
+                    <!-- MINI-WEBSITE 5: MOBILE APP SHOWCASE -->
+                    <!-- ========================================================================= -->
+                    <section id="site-mobile" class="min-h-full bg-black hidden text-white flex flex-col justify-center items-center p-6 md:p-12">
+                        <div class="max-w-4xl mx-auto text-center space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold">
+                                <i class="fa-solid fa-mobile-screen"></i> iOS & Android Companion App
+                            </div>
+                            <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+                                Fitness Tracking Redefined by <span class="text-emerald-400">Biometric Sync</span>
+                            </h1>
+                            <p class="text-slate-400 text-sm max-w-xl mx-auto">
+                                Track heart rate variability, workout intensity, and sleep cycles directly from your smartwatch.
+                            </p>
+
+                            <!-- Mobile Phone Shell Mockup -->
+                            <div class="pt-6 flex justify-center">
+                                <div class="w-64 h-[480px] bg-slate-900 rounded-[40px] p-3 border-4 border-slate-800 shadow-2xl relative flex flex-col justify-between">
+                                    <!-- Dynamic Notch -->
+                                    <div class="w-24 h-4 bg-black rounded-b-xl mx-auto z-10"></div>
+                                    
+                                    <!-- Screen Content -->
+                                    <div class="flex-1 bg-slate-950 rounded-[30px] p-4 flex flex-col justify-between text-left overflow-hidden">
+                                        <div>
+                                            <div class="text-[10px] text-slate-500 font-mono">TODAY'S SUMMARY</div>
+                                            <div class="text-xl font-bold text-white mb-2">12,480 <span class="text-xs font-normal text-slate-400">steps</span></div>
+                                            <!-- Ring graphic -->
+                                            <div class="w-24 h-24 rounded-full border-4 border-emerald-500 border-t-emerald-800 mx-auto my-4 flex items-center justify-center">
+                                                <i class="fa-solid fa-heart-pulse text-2xl text-emerald-400 animate-pulse"></i>
+                                            </div>
+                                        </div>
+                                        <button class="w-full py-2 bg-emerald-500 hover:bg-emerald-400 text-black font-bold text-xs rounded-xl transition">
+                                            Start Workout
+                                        </button>
+                                    </div>
+                                    
+                                    <!-- Home Bar Indicator -->
+                                    <div class="w-20 h-1 bg-slate-700 rounded-full mx-auto my-1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </main>
+
+        <aside id="right-inspector" class="w-72 bg-figma-panel border-l border-figma-border flex flex-col shrink-0">
+            <!-- Inspector Header -->
+            <div class="p-3 border-b border-figma-border flex items-center justify-between text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                <span>Design Tokens</span>
+                <i class="fa-solid fa-swatchbook text-figma-purple"></i>
+            </div>
+
+            <!-- Token Controls Scroll Area -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-6 text-xs">
+                
+                <!-- Color Palette Tokens -->
+                <div>
+                    <span class="text-gray-400 font-mono text-[10px] uppercase block mb-3">Color Tokens</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div class="bg-black/30 p-2 rounded-lg border border-white/5 flex items-center space-x-2">
+                            <span class="w-4 h-4 rounded bg-figma-blue"></span>
+                            <div class="font-mono text-[10px] truncate">#0D99FF</div>
+                        </div>
+                        <div class="bg-black/30 p-2 rounded-lg border border-white/5 flex items-center space-x-2">
+                            <span class="w-4 h-4 rounded bg-figma-purple"></span>
+                            <div class="font-mono text-[10px] truncate">#9747FF</div>
+                        </div>
+                        <div class="bg-black/30 p-2 rounded-lg border border-white/5 flex items-center space-x-2">
+                            <span class="w-4 h-4 rounded bg-figma-accent"></span>
+                            <div class="font-mono text-[10px] truncate">#0CF1A9</div>
+                        </div>
+                        <div class="bg-black/30 p-2 rounded-lg border border-white/5 flex items-center space-x-2">
+                            <span class="w-4 h-4 rounded bg-amber-500"></span>
+                            <div class="font-mono text-[10px] truncate">#F59E0B</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Component State Toggle -->
+                <div>
+                    <span class="text-gray-400 font-mono text-[10px] uppercase block mb-3">Component Prototype States</span>
+                    <div class="space-y-2">
+                        <label class="flex items-center justify-between p-2 rounded-lg bg-black/20 border border-white/5 cursor-pointer">
+                            <span class="text-gray-300">Hover Animations</span>
+                            <input type="checkbox" checked class="rounded accent-figma-blue">
+                        </label>
+                        <label class="flex items-center justify-between p-2 rounded-lg bg-black/20 border border-white/5 cursor-pointer">
+                            <span class="text-gray-300">Glassmorphism</span>
+                            <input type="checkbox" checked class="rounded accent-figma-blue">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Export Design Code Snippet -->
+                <div>
+                    <span class="text-gray-400 font-mono text-[10px] uppercase block mb-2">CSS Token Output</span>
+                    <div class="bg-black/50 p-3 rounded-lg border border-white/10 font-mono text-[10px] text-emerald-400 overflow-x-auto">
+                        <code>
+                            --radius-ui: 1rem;<br>
+                            --color-primary: #0D99FF;<br>
+                            --shadow-glow: 0 0 20px;
+                        </code>
+                    </div>
+                    <button onclick="copyTokensToClipboard()" class="mt-2 w-full py-1.5 bg-white/10 hover:bg-white/20 text-white rounded font-medium text-xs flex items-center justify-center space-x-2 transition">
+                        <i class="fa-regular fa-copy"></i>
+                        <span>Copy Code Tokens</span>
+                    </button>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+
+    <script>
+        // Store Active Site Template ID
+        let currentSite = 'saas';
+
+        // Site details mapping
+        const siteData = {
+            saas: {
+                title: 'SaaS Platform Landing',
+                url: 'https://designhub.ui/saas-flow',
+                layers: ['Navbar', 'Hero Section', 'Metrics Dashboard', 'Feature Grid']
+            },
+            ecommerce: {
+                title: 'E-Commerce Product Detail',
+                url: 'https://designhub.ui/aurasound-pro',
+                layers: ['E-Com Header', 'Product Gallery', 'Acoustic Specs', 'Cart Actions']
+            },
+            portfolio: {
+                title: 'Creative Portfolio',
+                url: 'https://designhub.ui/evelyn-vance',
+                layers: ['Header Title', 'Statement Hero', 'Case Studies Grid', 'Footer']
+            },
+            blog: {
+                title: 'Tech Magazine Grid',
+                url: 'https://designhub.ui/hyperbyte-journal',
+                layers: ['Publication Header', 'Featured Article', 'Trending Wire', 'Newsletter']
+            },
+            mobile: {
+                title: 'Mobile App Showcase',
+                url: 'https://designhub.ui/biometrics-app',
+                layers: ['Mobile Shell Wrapper', 'Notch Area', 'Biometrics Ring', 'CTA Button']
+            }
+        };
+
+        // Switch between the 5 mini websites
+        function switchTemplate(siteId) {
+            currentSite = siteId;
+
+            // Hide all mini website containers
+            document.querySelectorAll('#viewport-content > section').forEach(el => el.classList.add('hidden'));
+
+            // Show selected website
+            const activeSiteEl = document.getElementById(`site-${siteId}`);
+            if (activeSiteEl) activeSiteEl.classList.remove('hidden');
+
+            // Update Tab navigation styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-figma-blue', 'text-white', 'shadow-lg');
+                btn.classList.add('text-gray-400');
+            });
+
+            const activeTab = document.getElementById(`tab-${siteId}`);
+            if (activeTab) {
+                activeTab.classList.add('bg-figma-blue', 'text-white', 'shadow-lg');
+                activeTab.classList.remove('text-gray-400');
+            }
+
+            // Update left sidebar page highlights
+            document.querySelectorAll('[id^="tree-"]').forEach(treeItem => {
+                treeItem.classList.remove('bg-figma-blue/20', 'text-figma-blue', 'border', 'border-figma-blue/30', 'font-medium');
+                treeItem.classList.add('text-gray-400');
+            });
+
+            const activeTree = document.getElementById(`tree-${siteId}`);
+            if (activeTree) {
+                activeTree.classList.add('bg-figma-blue/20', 'text-figma-blue', 'border', 'border-figma-blue/30', 'font-medium');
+                activeTree.classList.remove('text-gray-400');
+            }
+
+            // Update Header Information
+            document.getElementById('simulated-url').innerText = siteData[siteId].url;
+            document.getElementById('current-template-label').innerText = siteData[siteId].title;
+
+            // Render layer breakdown tree
+            renderLayers(siteData[siteId].layers);
+        }
+
+        // Render Layer Tree
+        function renderLayers(layers) {
+            const container = document.getElementById('layer-components');
+            container.innerHTML = layers.map((layer, index) => `
+                <div class="px-2.5 py-1 rounded hover:bg-white/5 flex items-center justify-between cursor-pointer">
+                    <span class="flex items-center space-x-2">
+                        <i class="fa-solid fa-cube text-[10px] text-figma-purple"></i>
+                        <span>${layer}</span>
+                    </span>
+                    <i class="fa-regular fa-eye text-[10px] text-gray-500 hover:text-white"></i>
+                </div>
+            `).join('');
+        }
+
+        // Device Frame Switcher (Desktop vs Mobile View)
+        function setDeviceView(viewMode) {
+            const wrapper = document.getElementById('device-wrapper');
+            const deskBtn = document.getElementById('view-desktop');
+            const mobBtn = document.getElementById('view-mobile');
+            const dims = document.getElementById('frame-dimensions');
+
+            if (viewMode === 'mobile') {
+                wrapper.classList.remove('max-w-6xl');
+                wrapper.classList.add('max-w-sm');
+                mobBtn.classList.add('bg-white/10', 'text-white');
+                mobBtn.classList.remove('text-gray-400');
+                deskBtn.classList.remove('bg-white/10', 'text-white');
+                deskBtn.classList.add('text-gray-400');
+                dims.innerText = '375 x 812';
+            } else {
+                wrapper.classList.remove('max-w-sm');
+                wrapper.classList.add('max-w-6xl');
+                deskBtn.classList.add('bg-white/10', 'text-white');
+                deskBtn.classList.remove('text-gray-400');
+                mobBtn.classList.remove('bg-white/10', 'text-white');
+                mobBtn.classList.add('text-gray-400');
+                dims.innerText = '1440 x 900';
+            }
+        }
+
+        // Toggle Inspector Sidebar
+        function toggleInspector() {
+            const inspector = document.getElementById('right-inspector');
+            inspector.classList.toggle('hidden');
+        }
+
+        // Interactive E-Commerce Cart Handler
+        let cartCount = 1;
+        function addToCart() {
+            cartCount++;
+            const badge = document.getElementById('cart-badge');
+            badge.innerText = cartCount;
+            badge.classList.add('scale-125');
+            setTimeout(() => badge.classList.remove('scale-125'), 200);
+        }
+
+        // SaaS Demo Action
+        function triggerSaasDemo() {
+            const counter = document.getElementById('saas-counter');
+            let current = 18942;
+            counter.innerText = (current + 100).toLocaleString();
+        }
+
+        // Reload current iframe simulated view
+        function refreshCurrentFrame() {
+            const currentEl = document.getElementById(`site-${currentSite}`);
+            currentEl.classList.add('opacity-50');
+            setTimeout(() => currentEl.classList.remove('opacity-50'), 300);
+        }
+
+        // Copy Tokens to Clipboard safely
+        function copyTokensToClipboard() {
+            const tokenCode = `--radius-ui: 1rem;\n--color-primary: #0D99FF;\n--shadow-glow: 0 0 20px;`;
+            const textArea = document.createElement("textarea");
+            textArea.value = tokenCode;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Visual confirmation
+            alert('Design tokens copied to clipboard!');
+        }
+
+        // Initialize default view on load
+        window.onload = function() {
+            switchTemplate('saas');
+        };
+    </script>
+</body>
+</html>
