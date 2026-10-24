@@ -1,4 +1,4 @@
-user-agent:*
-Allow" /
+User-agent:*
+Allow:/
 
 Sitemap: https://webseoproject.netlify.app/sitemap.xml
